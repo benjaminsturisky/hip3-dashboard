@@ -1,0 +1,3392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HIP-3 Dashboard | Hyperliquid TradFi Analytics - Stocks, Commodities & Forex On-Chain</title>
+  <meta name="description" content="Track HIP-3 markets on Hyperliquid in real time. Compare deployers like Trade[XYZ], hyENA, Dreamcash, Kinetiq, Felix & Ventuals. Volume, open interest, and analytics for on-chain stocks, commodities, and forex trading.">
+  <meta name="keywords" content="HIP-3, Hyperliquid, TradFi, traditional finance, on-chain stocks, DeFi, perpetual futures, crypto trading, Trade XYZ, hyENA, Dreamcash, Kinetiq Markets, Felix, Ventuals, USDC, USDE, USDT0, USDH, real-time analytics, volume tracker, open interest, HIP3, deployer dashboard, on-chain equities, tokenized stocks, decentralized exchange, perps">
+  <meta name="author" content="Benjamin Sturisky">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://hypetrad.com/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://hypetrad.com/">
+  <meta property="og:title" content="HIP-3 Dashboard | Hyperliquid TradFi Analytics">
+  <meta property="og:description" content="Real-time analytics for HIP-3 markets on Hyperliquid. Track volume, open interest, and compare deployers across on-chain stocks, commodities, and forex.">
+  <meta property="og:image" content="https://hypetrad.com/images/hyperliquid-logo.png">
+  <meta property="og:site_name" content="HypeTrad - HIP-3 Dashboard">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://hypetrad.com/">
+  <meta name="twitter:title" content="HIP-3 Dashboard | Hyperliquid TradFi Analytics">
+  <meta name="twitter:description" content="Real-time analytics for HIP-3 markets on Hyperliquid. Track volume, open interest, and compare deployers across on-chain stocks, commodities, and forex.">
+  <meta name="twitter:image" content="https://hypetrad.com/images/hyperliquid-logo.png">
+  <meta name="twitter:creator" content="@bsturisky">
+
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#0a0a0f">
+  <link rel="icon" type="image/png" href="images/hyperliquid-logo.png">
+  <link rel="apple-touch-icon" href="images/hyperliquid-logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js" defer></script>
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "HIP-3 Dashboard",
+    "alternateName": ["HypeTrad", "Hyperliquid TradFi Dashboard", "HIP3 Dashboard", "HIP-3 Analytics"],
+    "url": "https://hypetrad.com/",
+    "description": "Real-time analytics dashboard for HIP-3 traditional finance markets on Hyperliquid. Track volume, open interest, deployer performance, and base asset breakdown for on-chain stocks, commodities, and forex.",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "author": {
+      "@type": "Person",
+      "name": "Benjamin Sturisky",
+      "url": "https://x.com/bsturisky"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "Real-time HIP-3 market data",
+      "Volume and open interest tracking",
+      "Deployer comparison and analytics",
+      "Asset class breakdown (equities, commodities, forex, crypto)",
+      "Base asset analysis (USDC, USDE, USDT0, USDH)",
+      "Token-level market details"
+    ],
+    "screenshot": "https://hypetrad.com/images/hyperliquid-logo.png",
+    "isAccessibleForFree": true
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is HIP-3 on Hyperliquid?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "HIP-3 is Hyperliquid's framework for deploying traditional finance (TradFi) assets on-chain as perpetual futures. It enables trading of stocks, commodities, forex, and crypto through third-party deployers like Trade[XYZ], hyENA, Dreamcash, Kinetiq Markets, Felix, and Ventuals."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What deployers are available on HIP-3?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Current HIP-3 deployers include Trade[XYZ] (USDC), hyENA (USDE), Dreamcash (USDT0), Kinetiq Markets (USDH), Felix (USDH), and Ventuals (USDH). Each deployer offers different markets and uses different base collateral assets."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What assets can you trade on HIP-3?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "HIP-3 supports trading of equities (TSLA, NVDA, AAPL, GOOGL, etc.), commodities (Gold, Silver, Copper, Oil), forex pairs (EUR/USD, GBP/USD), indices (S&P 500, Nasdaq 100), and crypto assets as perpetual futures."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg-base: #0a0a0f;
+      --bg-gradient-1: #0d1117;
+      --bg-gradient-2: #0f0a1a;
+
+      --glass-bg: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.06);
+      --glass-highlight: rgba(255, 255, 255, 0.08);
+      --glass-shadow: rgba(0, 0, 0, 0.4);
+
+      --text-primary: rgba(255, 255, 255, 0.95);
+      --text-secondary: rgba(255, 255, 255, 0.6);
+      --text-muted: rgba(255, 255, 255, 0.4);
+
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.3);
+      --positive: #10b981;
+      --negative: #ef4444;
+
+      --blur-amount: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'tnum';
+      overflow-x: hidden;
+    }
+
+    /* Atmospheric background */
+    .bg-atmosphere {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
+        linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-base) 50%, var(--bg-gradient-2) 100%);
+    }
+
+    .bg-noise {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.015;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 32px 40px;
+    }
+
+    /* Glass card base */
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--blur-amount));
+      -webkit-backdrop-filter: blur(var(--blur-amount));
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      box-shadow:
+        0 4px 24px var(--glass-shadow),
+        inset 0 1px 0 var(--glass-highlight);
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .header-title h1 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .header-title p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .header-title a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .header-title a:hover {
+      color: #818cf8;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Loading */
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 20px;
+      gap: 20px;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 2px solid var(--glass-border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .hidden { display: none !important; }
+
+    /* Stats Grid - Top KPIs */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      padding: 24px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .stat-value.accent {
+      background: linear-gradient(135deg, var(--accent) 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 32px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: -0.01em;
+    }
+
+    /* Asset Class Cards */
+    .asset-class-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .asset-class-card {
+      padding: 24px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .asset-class-card:hover {
+      border-color: rgba(99, 102, 241, 0.3);
+      transform: translateY(-2px);
+      box-shadow:
+        0 8px 32px var(--glass-shadow),
+        0 0 0 1px rgba(99, 102, 241, 0.1),
+        inset 0 1px 0 var(--glass-highlight);
+    }
+
+    .asset-class-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+    }
+
+    .asset-class-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .asset-class-stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .asset-class-stat-value {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+    }
+
+    /* Two Column Layout */
+    .two-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    /* Data Table */
+    .data-table {
+      overflow: hidden;
+    }
+
+    .data-table-header {
+      display: grid;
+      grid-template-columns: 1fr 85px 60px;
+      gap: 16px;
+      padding: 14px 20px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .data-table-header span:not(:first-child) {
+      text-align: right;
+    }
+
+    .data-table-body {
+      max-height: 420px;
+      overflow-y: auto;
+    }
+
+    .data-table-body::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .data-table-body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .data-table-body::-webkit-scrollbar-thumb {
+      background: var(--glass-border);
+      border-radius: 3px;
+    }
+
+    .data-table-row {
+      display: grid;
+      grid-template-columns: 1fr 85px 60px;
+      gap: 16px;
+      padding: 14px 20px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+      transition: background 0.15s;
+      cursor: pointer;
+      align-items: center;
+    }
+
+    .data-table-row:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .data-table-row:last-child {
+      border-bottom: none;
+    }
+
+    .token-name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+      color: var(--text-primary);
+      min-width: 0;
+    }
+
+    .token-info {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .token-info .name {
+      font-weight: 500;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .token-info .ticker {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .token-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 600;
+      color: #fff;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .token-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .value {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+    }
+
+    .share {
+      text-align: right;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    /* Deployer Cards */
+    .deployer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .deployer-card {
+      padding: 20px;
+      transition: all 0.2s;
+    }
+
+    .deployer-card:hover {
+      border-color: rgba(99, 102, 241, 0.3);
+      box-shadow:
+        0 4px 24px var(--glass-shadow),
+        0 0 0 1px rgba(99, 102, 241, 0.1),
+        inset 0 1px 0 var(--glass-highlight);
+    }
+
+    .deployer-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .deployer-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: rgba(255, 255, 255, 0.05);
+      flex-shrink: 0;
+    }
+
+    .deployer-name {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .deployer-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .deployer-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .deployer-stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .deployer-stat-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .deployer-stat-value.accent {
+      color: var(--accent);
+    }
+
+    .deployer-stat.full-width {
+      grid-column: span 2;
+      padding-top: 12px;
+      margin-top: 4px;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: rgba(20, 20, 30, 0.95);
+      backdrop-filter: blur(40px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 560px;
+      max-height: 80vh;
+      overflow: hidden;
+      transform: scale(0.95) translateY(10px);
+      transition: transform 0.2s;
+      box-shadow:
+        0 24px 48px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 var(--glass-highlight);
+    }
+
+    .modal-overlay.active .modal {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .modal-title .token-icon {
+      width: 36px;
+      height: 36px;
+      font-size: 11px;
+    }
+
+    .modal-close {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 10px;
+      transition: all 0.15s;
+    }
+
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+    }
+
+    .modal-body {
+      padding: 24px;
+      overflow-y: auto;
+      max-height: calc(80vh - 100px);
+    }
+
+    .modal-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .modal-stat {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .modal-stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .modal-stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .modal-table {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .modal-table-header {
+      display: grid;
+      grid-template-columns: 1fr 100px 100px;
+      gap: 12px;
+      padding: 12px 16px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .modal-table-header span:not(:first-child) {
+      text-align: right;
+    }
+
+    .modal-table-row {
+      display: grid;
+      grid-template-columns: 1fr 100px 100px;
+      gap: 12px;
+      padding: 14px 16px;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+      align-items: center;
+    }
+
+    .modal-table-row .value {
+      text-align: right;
+    }
+
+    .modal-table-row:last-child {
+      border-bottom: none;
+    }
+
+    .modal-deployer-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-deployer-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: rgba(255, 255, 255, 0.05);
+      flex-shrink: 0;
+    }
+
+    .modal-deployer-name {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    /* Sort Toggle */
+    .sort-toggle {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    /* Compare Feature */
+    .compare-btn {
+      padding: 8px 16px;
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 8px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .compare-btn:hover {
+      background: rgba(99, 102, 241, 0.2);
+    }
+
+    .compare-selectors {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .compare-selector {
+      flex: 1;
+    }
+
+    .compare-selector label {
+      display: block;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+
+    .compare-selector select {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      color: var(--text-primary);
+      font-size: 14px;
+      font-family: inherit;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+    }
+
+    .compare-selector select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .compare-selector select option {
+      background: #1a1a2e;
+      color: var(--text-primary);
+    }
+
+    .compare-vs {
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      padding-top: 20px;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .compare-card {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .compare-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .compare-card-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .compare-card-ticker {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .compare-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .compare-metric {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .compare-metric-label {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .compare-metric-value {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .compare-metric-value.winner {
+      color: var(--positive);
+    }
+
+    .compare-bar-container {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .compare-bar-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+
+    .compare-bar {
+      display: flex;
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .compare-bar-left {
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .compare-bar-right {
+      background: rgba(255, 255, 255, 0.3);
+      transition: width 0.3s ease;
+    }
+
+    .compare-bar-legend {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .sort-btn {
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .sort-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+    }
+
+    .sort-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--glass-border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .deployer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .asset-class-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .two-columns {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 16px 12px;
+      }
+
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .header-left {
+        gap: 12px;
+      }
+
+      .header-buttons {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .compare-btn {
+        padding: 8px 12px;
+        font-size: 11px;
+      }
+
+      .logo {
+        width: 38px;
+        height: 38px;
+      }
+
+      .header-title h1 {
+        font-size: 16px;
+      }
+
+      .header-title p {
+        font-size: 12px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+
+      .stat-card {
+        padding: 14px 12px;
+      }
+
+      .stat-label {
+        font-size: 10px;
+        margin-bottom: 8px;
+      }
+
+      .stat-value {
+        font-size: 20px;
+      }
+
+      .section {
+        margin-bottom: 20px;
+      }
+
+      .section-header {
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .section-title {
+        font-size: 13px;
+      }
+
+      .asset-class-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .asset-class-card {
+        padding: 16px;
+      }
+
+      .asset-class-name {
+        font-size: 11px;
+        margin-bottom: 14px;
+      }
+
+      .asset-class-stats {
+        gap: 12px;
+      }
+
+      .asset-class-stat-label {
+        font-size: 10px;
+      }
+
+      .asset-class-stat-value {
+        font-size: 18px;
+      }
+
+      .deployer-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .deployer-card {
+        padding: 16px;
+      }
+
+      .deployer-header {
+        margin-bottom: 16px;
+        gap: 10px;
+      }
+
+      .deployer-logo {
+        width: 32px;
+        height: 32px;
+      }
+
+      .deployer-name {
+        font-size: 14px;
+      }
+
+      .deployer-stats {
+        gap: 12px;
+      }
+
+      .deployer-stat-label {
+        font-size: 10px;
+      }
+
+      .deployer-stat-value {
+        font-size: 14px;
+      }
+
+      .deployer-stat.full-width {
+        padding-top: 10px;
+        margin-top: 2px;
+      }
+
+      .data-table-header {
+        grid-template-columns: 1fr 70px 45px;
+        gap: 8px;
+        padding: 10px 12px;
+        font-size: 10px;
+      }
+
+      .data-table-row {
+        grid-template-columns: 1fr 70px 45px;
+        gap: 8px;
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+
+      .token-info .name {
+        font-size: 12px;
+      }
+
+      .token-info .ticker {
+        font-size: 10px;
+      }
+
+      .value {
+        font-size: 12px;
+      }
+
+      .share {
+        font-size: 11px;
+      }
+
+      .data-table-body {
+        max-height: 300px;
+      }
+
+      .token-name {
+        gap: 8px;
+        font-size: 13px;
+      }
+
+      .token-icon {
+        width: 24px;
+        height: 24px;
+        font-size: 8px;
+      }
+
+      /* Compare mobile */
+      .compare-selectors {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+      }
+
+      .compare-vs {
+        display: none;
+      }
+
+      .compare-selector select {
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+
+      .compare-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .compare-card {
+        padding: 16px;
+      }
+
+      .compare-card-header {
+        gap: 10px;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+      }
+
+      .compare-card-name {
+        font-size: 14px;
+      }
+
+      .compare-metric-label {
+        font-size: 12px;
+      }
+
+      .compare-metric-value {
+        font-size: 14px;
+      }
+
+      .compare-bar-container {
+        margin-top: 16px;
+        padding-top: 14px;
+      }
+
+      .compare-bar-legend {
+        font-size: 11px;
+      }
+
+      /* Modal mobile */
+      .modal-overlay {
+        padding: 12px;
+        align-items: flex-end;
+      }
+
+      .modal {
+        max-width: 100%;
+        max-height: 85vh;
+        border-radius: 16px 16px 0 0;
+      }
+
+      .modal-header {
+        padding: 16px;
+      }
+
+      .modal-title {
+        font-size: 16px;
+        gap: 10px;
+      }
+
+      .modal-title .token-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 10px;
+      }
+
+      .modal-close {
+        padding: 8px;
+      }
+
+      .modal-body {
+        padding: 16px;
+        max-height: calc(85vh - 80px);
+      }
+
+      .modal-stats {
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+
+      .modal-stat {
+        padding: 12px;
+      }
+
+      .modal-stat-label {
+        font-size: 10px;
+        margin-bottom: 4px;
+      }
+
+      .modal-stat-value {
+        font-size: 18px;
+      }
+
+      .modal-table-header {
+        grid-template-columns: 1fr 70px 70px;
+        gap: 8px;
+        padding: 10px 12px;
+        font-size: 10px;
+      }
+
+      .modal-table-row {
+        grid-template-columns: 1fr 70px 70px;
+        gap: 8px;
+        padding: 12px;
+        font-size: 12px;
+      }
+
+      .modal-deployer-info {
+        gap: 8px;
+      }
+
+      .modal-deployer-logo {
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+      }
+
+      .modal-deployer-name {
+        font-size: 13px;
+      }
+
+      .footer {
+        margin-top: 32px;
+        padding-top: 16px;
+        font-size: 12px;
+      }
+
+    }
+
+    /* Extra small screens */
+    @media (max-width: 380px) {
+      .container {
+        padding: 12px 8px;
+      }
+
+      .header-title h1 {
+        font-size: 14px;
+      }
+
+      .stats-grid {
+        gap: 6px;
+      }
+
+      .stat-card {
+        padding: 10px 8px;
+      }
+
+      .stat-value {
+        font-size: 16px;
+      }
+
+      .stat-label {
+        font-size: 9px;
+      }
+
+      .asset-class-card {
+        padding: 12px;
+      }
+
+      .asset-class-name {
+        font-size: 10px;
+      }
+
+      .asset-class-stat-value {
+        font-size: 16px;
+      }
+
+      .deployer-card {
+        padding: 14px;
+      }
+
+      .deployer-logo {
+        width: 28px;
+        height: 28px;
+      }
+
+      .deployer-name {
+        font-size: 13px;
+      }
+
+      .deployer-stats {
+        gap: 10px;
+      }
+
+      .data-table-header,
+      .data-table-row {
+        grid-template-columns: 1fr 55px 38px;
+        gap: 4px;
+        padding: 10px 8px;
+      }
+
+      .data-table-row {
+        font-size: 12px;
+      }
+
+      .data-table-body {
+        max-height: 240px;
+      }
+
+      .token-icon {
+        width: 20px;
+        height: 20px;
+        font-size: 7px;
+      }
+
+      .token-name {
+        gap: 6px;
+      }
+
+      .token-info .name {
+        font-size: 11px;
+      }
+
+      .value {
+        font-size: 10px;
+      }
+
+      .share {
+        font-size: 10px;
+      }
+
+      .compare-card {
+        padding: 12px;
+      }
+
+      .compare-card-name {
+        font-size: 13px;
+      }
+
+      .compare-metrics {
+        gap: 12px;
+      }
+
+      .compare-metric-label {
+        font-size: 11px;
+      }
+
+      .compare-metric-value {
+        font-size: 13px;
+      }
+
+      .compare-bar-container {
+        margin-top: 12px;
+        padding-top: 10px;
+      }
+
+      .compare-bar-legend {
+        font-size: 10px;
+      }
+
+      .modal-header {
+        padding: 12px;
+      }
+
+      .modal-body {
+        padding: 12px;
+      }
+
+      .modal-title {
+        font-size: 14px;
+      }
+
+      .modal-stat-value {
+        font-size: 16px;
+      }
+
+      .modal-table-header,
+      .modal-table-row {
+        grid-template-columns: 1fr 60px 60px;
+        gap: 6px;
+        padding: 10px 8px;
+      }
+
+      .modal-table-row {
+        font-size: 11px;
+      }
+
+      .modal-deployer-name {
+        font-size: 12px;
+      }
+
+    }
+
+    /* Touch-friendly improvements */
+    @media (hover: none) and (pointer: coarse) {
+      .data-table-row {
+        min-height: 48px;
+      }
+
+      .deployer-card:hover {
+        border-color: var(--glass-border);
+        box-shadow: 0 4px 24px var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+      }
+
+      .data-table-row:active {
+        background: rgba(255, 255, 255, 0.04);
+      }
+    }
+
+    /* Safe area for notched phones */
+    @supports (padding: max(0px)) {
+      .container {
+        padding-left: max(12px, env(safe-area-inset-left));
+        padding-right: max(12px, env(safe-area-inset-right));
+        padding-bottom: max(16px, env(safe-area-inset-bottom));
+      }
+
+      .modal-overlay {
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+    }
+
+    /* Charts Section */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .chart-card {
+      padding: 20px;
+    }
+
+    .chart-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 220px;
+    }
+
+    .chart-period-toggle {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .chart-period-btn {
+      padding: 4px 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .chart-period-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .chart-period-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .chart-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 220px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 768px) {
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .chart-container {
+        height: 180px;
+      }
+
+      .chart-empty {
+        height: 180px;
+      }
+    }
+
+    /* SEO Content - hidden visually, visible to crawlers */
+    .seo-content {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-atmosphere"></div>
+  <div class="bg-noise"></div>
+
+  <main>
+  <div class="container">
+    <header class="header">
+      <div class="header-left">
+        <div class="logo"><img src="images/hyperliquid-logo.png" alt="Hyperliquid HIP-3 Dashboard Logo"></div>
+        <div class="header-title">
+          <h1>Traditional Finance on Hyperliquid</h1>
+          <p>Built by <a href="https://x.com/bsturisky" target="_blank" rel="noopener">Benjamin Sturisky</a></p>
+        </div>
+      </div>
+      <div class="header-buttons" style="display: none;" id="headerButtons">
+        <button class="compare-btn" id="compareBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 6px;">
+            <path d="M16 3h5v5M8 3H3v5M3 16v5h5M21 16v5h-5M21 3l-7 7M3 21l7-7"/>
+          </svg>
+          Compare Assets
+        </button>
+        <button class="compare-btn" id="compareDeployersBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 6px;">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          Compare Deployers
+        </button>
+        <button class="compare-btn" id="compareBaseAssetsBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 6px;">
+            <circle cx="12" cy="12" r="10"/><path d="M12 6v12M6 12h12"/>
+          </svg>
+          Compare Base Assets
+        </button>
+      </div>
+    </header>
+
+    <!-- Loading -->
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p class="loading-text">Loading market data...</p>
+    </div>
+
+    <!-- Content -->
+    <div id="content" class="hidden">
+      <!-- Top Stats -->
+      <div class="stats-grid">
+        <div class="stat-card glass">
+          <div class="stat-label">Volume (24h)</div>
+          <div class="stat-value accent" id="totalVolume">-</div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-label">Open Interest</div>
+          <div class="stat-value" id="totalOI">-</div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-label">Markets</div>
+          <div class="stat-value" id="marketCount">-</div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-label">Deployers</div>
+          <div class="stat-value" id="deployerCount">-</div>
+        </div>
+      </div>
+
+      <!-- Asset Class Breakdown -->
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Asset Classes</h2>
+        </div>
+        <div class="asset-class-grid" id="assetClassGrid"></div>
+      </div>
+
+      <!-- Volume & OI by Token -->
+      <div class="section">
+        <div class="two-columns">
+          <div>
+            <div class="section-header">
+              <h2 class="section-title">Volume by Token</h2>
+            </div>
+            <div class="data-table glass">
+              <div class="data-table-header">
+                <span>Asset</span>
+                <span>Volume</span>
+                <span>Share</span>
+              </div>
+              <div class="data-table-body" id="volumeByToken"></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-header">
+              <h2 class="section-title">Open Interest by Token</h2>
+            </div>
+            <div class="data-table glass">
+              <div class="data-table-header">
+                <span>Asset</span>
+                <span>OI</span>
+                <span>Share</span>
+              </div>
+              <div class="data-table-body" id="oiByToken"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deployers -->
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Deployers</h2>
+        </div>
+        <div class="deployer-grid" id="deployerGrid"></div>
+      </div>
+
+      <!-- Base Assets -->
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Base Assets</h2>
+        </div>
+        <div class="deployer-grid" id="baseAssetGrid"></div>
+      </div>
+
+      <!-- Historical Charts -->
+      <div class="section" id="chartsSection" style="display: none;">
+        <div class="section-header">
+          <h2 class="section-title">Historical</h2>
+          <div class="chart-period-toggle" id="chartPeriodToggle">
+            <button class="chart-period-btn" data-days="7">7D</button>
+            <button class="chart-period-btn active" data-days="30">30D</button>
+            <button class="chart-period-btn" data-days="90">90D</button>
+          </div>
+        </div>
+        <div class="charts-grid">
+          <div class="chart-card glass">
+            <div class="chart-card-title">Total Volume (24h)</div>
+            <div class="chart-container">
+              <canvas id="volumeChart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card glass">
+            <div class="chart-card-title">Total Open Interest</div>
+            <div class="chart-container">
+              <canvas id="oiChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEO Content (visible to crawlers, below fold) -->
+  <article class="seo-content" aria-label="About HIP-3 on Hyperliquid">
+    <h2>HIP-3: Traditional Finance on Hyperliquid</h2>
+    <p>HIP-3 is Hyperliquid's framework that enables third-party deployers to bring traditional finance (TradFi) assets on-chain as perpetual futures contracts. This dashboard provides real-time analytics for all HIP-3 markets, including volume, open interest, and deployer performance data.</p>
+
+    <h3>HIP-3 Deployers</h3>
+    <p>Six deployers currently operate on HIP-3, each offering unique markets and using different collateral base assets:</p>
+    <ul>
+      <li><strong>Trade[XYZ]</strong> — The largest HIP-3 deployer by volume, using USDC as collateral. Offers 40+ markets including major equities, commodities, and indices.</li>
+      <li><strong>hyENA</strong> — Uses USDE (Ethena USDe) as collateral. Provides access to stocks, metals, and crypto perpetuals.</li>
+      <li><strong>Dreamcash</strong> — Operates with USDT0 collateral. Focuses on high-demand equity and commodity markets.</li>
+      <li><strong>Kinetiq Markets</strong> — Uses USDH collateral. Covers equities, commodities, forex, and crypto.</li>
+      <li><strong>Felix</strong> — Also USDH-based. Offers a curated selection of TradFi and crypto markets.</li>
+      <li><strong>Ventuals</strong> — USDH collateral. Provides a diverse range of perpetual futures markets.</li>
+    </ul>
+
+    <h3>Available Asset Classes</h3>
+    <p>HIP-3 markets span four major asset classes:</p>
+    <ul>
+      <li><strong>Equities</strong> — Trade stocks like Tesla (TSLA), Nvidia (NVDA), Apple (AAPL), Google (GOOGL), Amazon (AMZN), Meta, Microsoft, AMD, Netflix, Intel, Coinbase, MicroStrategy, Palantir, and dozens more as on-chain perpetual futures.</li>
+      <li><strong>Commodities</strong> — Gold, Silver, Copper, Crude Oil, Natural Gas, and agricultural commodities.</li>
+      <li><strong>Forex</strong> — Major currency pairs including EUR/USD, GBP/USD, USD/JPY, and the US Dollar Index (DXY).</li>
+      <li><strong>Crypto</strong> — Bitcoin (BTC), Ethereum (ETH), Solana (SOL), and other cryptocurrency perpetuals.</li>
+    </ul>
+
+    <h3>Base Collateral Assets</h3>
+    <p>HIP-3 deployers use four different stablecoins as collateral: USDC (Circle), USDE (Ethena USDe), USDT0 (Tether), and USDH. Each deployer is configured with a single collateral token that determines the settlement currency for all of its markets.</p>
+
+    <h3>About This Dashboard</h3>
+    <p>HypeTrad provides free, real-time analytics for the HIP-3 ecosystem on Hyperliquid. Track 24-hour trading volume, open interest, market counts, and compare performance across deployers, tokens, and base assets. Data is fetched directly from the Hyperliquid API.</p>
+  </article>
+  </main>
+
+  <!-- Compare Assets Modal -->
+  <div class="modal-overlay" id="compareModal">
+    <div class="modal" style="max-width: 640px;">
+      <div class="modal-header">
+        <h2 class="modal-title">Compare Assets</h2>
+        <button class="modal-close" id="compareModalClose">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="compare-selectors">
+          <div class="compare-selector">
+            <label>Asset 1</label>
+            <select id="compareAsset1"></select>
+          </div>
+          <span class="compare-vs">vs</span>
+          <div class="compare-selector">
+            <label>Asset 2</label>
+            <select id="compareAsset2"></select>
+          </div>
+        </div>
+        <div id="compareResults"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compare Deployers Modal -->
+  <div class="modal-overlay" id="compareDeployersModal">
+    <div class="modal" style="max-width: 640px;">
+      <div class="modal-header">
+        <h2 class="modal-title">Compare Deployers</h2>
+        <button class="modal-close" id="compareDeployersModalClose">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="compare-selectors">
+          <div class="compare-selector">
+            <label>Deployer 1</label>
+            <select id="compareDeployer1"></select>
+          </div>
+          <span class="compare-vs">vs</span>
+          <div class="compare-selector">
+            <label>Deployer 2</label>
+            <select id="compareDeployer2"></select>
+          </div>
+        </div>
+        <div id="compareDeployersResults"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compare Base Assets Modal -->
+  <div class="modal-overlay" id="compareBaseAssetsModal">
+    <div class="modal" style="max-width: 640px;">
+      <div class="modal-header">
+        <h2 class="modal-title">Compare Base Assets</h2>
+        <button class="modal-close" id="compareBaseAssetsModalClose">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="compare-selectors">
+          <div class="compare-selector">
+            <label>Base Asset 1</label>
+            <select id="compareBase1"></select>
+          </div>
+          <span class="compare-vs">vs</span>
+          <div class="compare-selector">
+            <label>Base Asset 2</label>
+            <select id="compareBase2"></select>
+          </div>
+        </div>
+        <div id="compareBaseAssetsResults"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Token Detail Modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalTitle">-</h2>
+        <button class="modal-close" id="modalClose">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-stats" id="modalStats"></div>
+        <div class="modal-table">
+          <div class="modal-table-header">
+            <span>Deployer</span>
+            <span>Volume</span>
+            <span>OI</span>
+          </div>
+          <div id="modalPairs"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // API & Data
+    const API = 'https://api.hyperliquid.xyz/info';
+
+    const DEPLOYERS = {
+      'xyz': { name: 'Trade[XYZ]', image: 'images/xyz.png' },
+      'hyna': { name: 'hyENA', image: 'images/hyena.png' },
+      'cash': { name: 'Dreamcash', image: 'images/dreamcash.png' },
+      'km': { name: 'Kinetiq Markets', image: 'images/kinetiq.png' },
+      'flx': { name: 'Felix', image: 'images/felix.png' },
+      'vntl': { name: 'Ventuals', image: 'images/ventuals.png' }
+    };
+
+    let data = {
+      deployers: {},
+      totals: { volume: 0, oi: 0, markets: 0 }
+    };
+
+    // Formatting
+    function fmt(n) {
+      if (n >= 1e9) return '$' + (n / 1e9).toFixed(2) + 'B';
+      if (n >= 1e6) return '$' + (n / 1e6).toFixed(2) + 'M';
+      if (n >= 1e3) return '$' + (n / 1e3).toFixed(1) + 'K';
+      return '$' + n.toFixed(0);
+    }
+
+    // Collateral token index to name mapping
+    const COLLATERAL_TOKENS = {
+      0: 'USDC',
+      235: 'USDE',
+      268: 'USDT0',
+      360: 'USDH'
+    };
+
+    const BASE_ASSET_LOGOS = {
+      'USDC': 'images/usdc.png',
+      'USDE': 'images/USDE.png',
+      'USDT0': 'images/USDT0.png',
+      'USDH': 'images/USDH.png'
+    };
+
+    const BASE_COLORS = { 'USDC': '#2775ca', 'USDT0': '#26a17b', 'USDE': '#b9a5e3', 'USDH': '#6366f1' };
+
+    const TOKEN_LOGOS = {
+      '1000PEPE': 'images/tokens/1000PEPE.png',
+      'ADA': 'images/tokens/ADA.png',
+      'BCH': 'images/tokens/BCH.png',
+      'BNB': 'images/tokens/BNB.png',
+      'BTC': 'images/tokens/BTC.png',
+      'DOGE': 'images/tokens/DOGE.png',
+      'ENA': 'images/tokens/ENA.png',
+      'ETH': 'images/tokens/ETH.png',
+      'FARTCOIN': 'images/tokens/FARTCOIN.png',
+      'HYPE': 'images/tokens/HYPE.png',
+      'LINK': 'images/tokens/LINK.png',
+      'LIT': 'images/tokens/LIT.png',
+      'LTC': 'images/tokens/LTC.png',
+      'PUMP': 'images/tokens/PUMP.png',
+      'SOL': 'images/tokens/SOL.png',
+      'SUI': 'images/tokens/SUI.png',
+      'XMR': 'images/tokens/XMR.png',
+      'XRP': 'images/tokens/XRP.png',
+      'ZEC': 'images/tokens/ZEC.png'
+    };
+
+    // Normalize ticker
+    function normalizeTicker(name) {
+      let ticker = name;
+      if (ticker.includes(':')) ticker = ticker.split(':').pop();
+      ticker = ticker.replace(/-PERP|-USD|-USDT|-USDC|\/USD|\/USDT|@\d+/gi, '').toUpperCase().trim();
+      const normalizations = {
+        'XAU': 'GOLD', 'XAUUSD': 'GOLD',
+        'XAG': 'SILVER', 'XAGUSD': 'SILVER',
+        'WTI': 'OIL', 'CRUDE': 'OIL', 'USOIL': 'OIL',
+        'GOOG': 'GOOGL', 'BRK.B': 'BRK', 'BRK.A': 'BRK'
+      };
+      return normalizations[ticker] || ticker;
+    }
+
+    // Asset names mapping
+    const ASSET_NAMES = {
+      // Equities
+      'AAPL': 'Apple', 'AMZN': 'Amazon', 'GOOGL': 'Google',
+      'MSFT': 'Microsoft', 'META': 'Meta', 'TSLA': 'Tesla', 'NVDA': 'Nvidia',
+      'AMD': 'AMD', 'NFLX': 'Netflix', 'INTC': 'Intel', 'COIN': 'Coinbase',
+      'MSTR': 'MicroStrategy', 'GME': 'GameStop', 'AMC': 'AMC', 'PLTR': 'Palantir',
+      'UBER': 'Uber', 'CRM': 'Salesforce', 'ORCL': 'Oracle', 'ADBE': 'Adobe',
+      'PYPL': 'PayPal', 'SQ': 'Block', 'SHOP': 'Shopify', 'SNOW': 'Snowflake',
+      'ZM': 'Zoom', 'BABA': 'Alibaba', 'JD': 'JD.com', 'PDD': 'PDD Holdings',
+      'NIO': 'NIO', 'RIVN': 'Rivian', 'LCID': 'Lucid', 'F': 'Ford', 'GM': 'GM',
+      'BA': 'Boeing', 'LMT': 'Lockheed Martin', 'RTX': 'RTX', 'NOC': 'Northrop',
+      'JPM': 'JPMorgan', 'BAC': 'Bank of America', 'WFC': 'Wells Fargo',
+      'GS': 'Goldman Sachs', 'MS': 'Morgan Stanley', 'C': 'Citigroup',
+      'V': 'Visa', 'MA': 'Mastercard', 'DIS': 'Disney', 'CMCSA': 'Comcast',
+      'T': 'AT&T', 'VZ': 'Verizon', 'WMT': 'Walmart', 'TGT': 'Target',
+      'COST': 'Costco', 'HD': 'Home Depot', 'MCD': 'McDonald\'s',
+      'SBUX': 'Starbucks', 'NKE': 'Nike', 'KO': 'Coca-Cola', 'PEP': 'Pepsi',
+      'PG': 'Procter & Gamble', 'JNJ': 'Johnson & Johnson', 'UNH': 'UnitedHealth',
+      'PFE': 'Pfizer', 'MRNA': 'Moderna', 'ABBV': 'AbbVie',
+      'XOM': 'Exxon', 'CVX': 'Chevron', 'COP': 'ConocoPhillips',
+      'ARM': 'ARM Holdings', 'SMCI': 'Super Micro', 'DELL': 'Dell',
+      'AVGO': 'Broadcom', 'MU': 'Micron', 'QCOM': 'Qualcomm',
+      'HOOD': 'Robinhood', 'SOFI': 'SoFi', 'AFRM': 'Affirm', 'UPST': 'Upstart',
+      'DKNG': 'DraftKings', 'ABNB': 'Airbnb', 'RBLX': 'Roblox',
+      'NET': 'Cloudflare', 'CRWD': 'CrowdStrike', 'ZS': 'Zscaler',
+      // ETFs & Indices
+      'SPY': 'S&P 500 ETF', 'QQQ': 'Nasdaq 100 ETF', 'IWM': 'Russell 2000',
+      'DIA': 'Dow Jones ETF', 'VOO': 'Vanguard S&P 500', 'VTI': 'Total Market',
+      'ARKK': 'ARK Innovation', 'XLF': 'Financials ETF', 'XLE': 'Energy ETF',
+      'XLK': 'Tech ETF', 'XLV': 'Healthcare ETF',
+      'US500': 'S&P 500', 'USA500': 'S&P 500', 'US100': 'Nasdaq 100',
+      'USA100': 'Nasdaq 100', 'US30': 'Dow Jones', 'USA30': 'Dow Jones',
+      'NDX': 'Nasdaq 100', 'SPX': 'S&P 500', 'DJI': 'Dow Jones', 'XYZ100': 'XYZ 100 Index',
+      // Commodities
+      'GOLD': 'Gold', 'SILVER': 'Silver',
+      'OIL': 'Crude Oil',
+      'BRENT': 'Brent Crude', 'NATGAS': 'Natural Gas', 'NG': 'Natural Gas',
+      'COPPER': 'Copper', 'HG': 'Copper', 'PLATINUM': 'Platinum', 'PL': 'Platinum',
+      'PALLADIUM': 'Palladium', 'PA': 'Palladium',
+      'WHEAT': 'Wheat', 'CORN': 'Corn', 'SOYBEAN': 'Soybean',
+      'COFFEE': 'Coffee', 'SUGAR': 'Sugar', 'COTTON': 'Cotton', 'COCOA': 'Cocoa',
+      // Forex
+      'EUR': 'Euro', 'EURUSD': 'EUR/USD', 'GBP': 'British Pound', 'GBPUSD': 'GBP/USD',
+      'JPY': 'Japanese Yen', 'USDJPY': 'USD/JPY', 'CHF': 'Swiss Franc', 'USDCHF': 'USD/CHF',
+      'AUD': 'Australian Dollar', 'AUDUSD': 'AUD/USD', 'CAD': 'Canadian Dollar', 'USDCAD': 'USD/CAD',
+      'NZD': 'New Zealand Dollar', 'NZDUSD': 'NZD/USD', 'DXY': 'US Dollar Index',
+      // Crypto
+      'BTC': 'Bitcoin', 'ETH': 'Ethereum', 'SOL': 'Solana', 'DOGE': 'Dogecoin',
+      'XRP': 'Ripple', 'ADA': 'Cardano', 'DOT': 'Polkadot', 'AVAX': 'Avalanche',
+      'MATIC': 'Polygon', 'LINK': 'Chainlink', 'UNI': 'Uniswap', 'ATOM': 'Cosmos',
+      'LTC': 'Litecoin', 'ETC': 'Ethereum Classic', 'AAVE': 'Aave', 'MKR': 'Maker',
+      'ARB': 'Arbitrum', 'OP': 'Optimism', 'SUI': 'Sui', 'SEI': 'Sei',
+      'TIA': 'Celestia', 'INJ': 'Injective', 'JUP': 'Jupiter', 'HYPE': 'Hyperliquid',
+      'PURR': 'Purr', 'PEPE': 'Pepe', 'BONK': 'Bonk', 'WIF': 'Dogwifhat',
+      'SHIB': 'Shiba Inu', 'MOG': 'Mog Coin',
+      'BNB': 'BNB', 'ENA': 'Ethena', 'BCH': 'Bitcoin Cash', 'ZEC': 'Zcash',
+      'LIT': 'Litentry', 'PUMP': 'PumpFun', 'FARTCOIN': 'Fartcoin', '1000PEPE': '1000x Pepe'
+    };
+
+    function getAssetName(ticker) {
+      return ASSET_NAMES[ticker] || ticker;
+    }
+
+    // Asset colors
+    function getAssetColor(ticker) {
+      const colors = {
+        'AAPL': '#555555', 'TSLA': '#cc0000', 'NVDA': '#76b900', 'GOOGL': '#4285f4',
+        'AMZN': '#ff9900', 'META': '#0668e1', 'MSFT': '#00a4ef', 'AMD': '#ed1c24',
+        'GOLD': '#ffd700', 'SILVER': '#c0c0c0', 'OIL': '#4a4a4a', 'COPPER': '#b87333',
+        'SPY': '#1f77b4', 'QQQ': '#9467bd', 'BTC': '#f7931a', 'ETH': '#627eea',
+        'SOL': '#00ffa3', 'DOGE': '#c3a634'
+      };
+      return colors[ticker] || `hsl(${(ticker.charCodeAt(0) * 37) % 360}, 50%, 55%)`;
+    }
+
+    function tokenIcon(ticker, size) {
+      const logo = TOKEN_LOGOS[ticker];
+      const s = size ? `width: ${size}px; height: ${size}px;` : '';
+      if (logo) {
+        return `<span class="token-icon" style="${s}"><img src="${logo}" alt="${ticker}" onerror="this.parentElement.innerHTML='${ticker.slice(0,3)}';this.parentElement.style.background=getAssetColor('${ticker}')"></span>`;
+      }
+      const color = getAssetColor(ticker);
+      const fs = size && size <= 24 ? 'font-size: 8px;' : '';
+      return `<span class="token-icon" style="background: ${color}; ${s} ${fs}">${ticker.slice(0, 3)}</span>`;
+    }
+
+    // Asset class classification
+    const ASSET_CLASSES = {
+      equities: [
+        'AAPL', 'AMZN', 'GOOGL', 'MSFT', 'META', 'TSLA', 'NVDA', 'AMD', 'NFLX',
+        'INTC', 'COIN', 'MSTR', 'GME', 'AMC', 'PLTR', 'UBER', 'CRM', 'ORCL', 'ADBE',
+        'PYPL', 'SQ', 'SHOP', 'SNOW', 'ZM', 'BABA', 'JD', 'PDD', 'NIO', 'RIVN', 'LCID',
+        'F', 'GM', 'BA', 'LMT', 'RTX', 'NOC', 'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C',
+        'V', 'MA', 'DIS', 'CMCSA', 'T', 'VZ', 'WMT', 'TGT', 'COST', 'HD', 'MCD',
+        'SBUX', 'NKE', 'KO', 'PEP', 'PG', 'JNJ', 'UNH', 'PFE', 'MRNA', 'ABBV',
+        'XOM', 'CVX', 'COP', 'SPY', 'QQQ', 'IWM', 'DIA', 'VOO', 'VTI', 'ARKK',
+        'XLF', 'XLE', 'XLK', 'XLV', 'ARM', 'SMCI', 'DELL', 'AVGO', 'MU', 'QCOM',
+        'HOOD', 'SOFI', 'AFRM', 'UPST', 'DKNG', 'ABNB', 'RBLX', 'NET', 'CRWD', 'ZS',
+        'BRK', 'US500', 'USA500', 'US100', 'USA100', 'US30', 'USA30', 'NDX', 'SPX', 'DJI',
+        'XYZ100'
+      ],
+      commodities: [
+        'GOLD', 'SILVER', 'OIL', 'BRENT', 'NATGAS', 'NG', 'COPPER', 'HG',
+        'PLATINUM', 'PL', 'PALLADIUM', 'PA',
+        'WHEAT', 'CORN', 'SOYBEAN', 'COFFEE', 'SUGAR', 'COTTON', 'COCOA'
+      ],
+      forex: [
+        'EUR', 'EURUSD', 'GBP', 'GBPUSD', 'JPY', 'USDJPY', 'CHF', 'USDCHF', 'AUD',
+        'AUDUSD', 'CAD', 'USDCAD', 'NZD', 'NZDUSD', 'CNY', 'USDCNY', 'CNH', 'HKD',
+        'SGD', 'KRW', 'INR', 'MXN', 'BRL', 'ZAR', 'TRY', 'RUB', 'SEK', 'NOK', 'DKK',
+        'DXY', 'DOLLAR'
+      ],
+      crypto: [
+        'BTC', 'ETH', 'SOL', 'DOGE', 'XRP', 'ADA', 'DOT', 'AVAX', 'MATIC', 'LINK',
+        'UNI', 'ATOM', 'LTC', 'ETC', 'AAVE', 'MKR', 'SNX', 'CRV', 'APE', 'SHIB',
+        'PEPE', 'BONK', 'WIF', 'ARB', 'OP', 'SUI', 'SEI', 'TIA', 'INJ', 'JUP',
+        'HYPE', 'PURR', 'MOG', 'FARTCOIN', 'AI16Z', 'VIRTUAL', 'PENGU',
+        'LIT', 'PUMP', 'BNB', 'ENA', 'ZEC', 'BCH', '1000PEPE'
+      ]
+    };
+
+    function classifyAsset(ticker) {
+      const t = ticker.toUpperCase();
+      if (ASSET_CLASSES.equities.includes(t)) return 'equities';
+      if (ASSET_CLASSES.commodities.includes(t)) return 'commodities';
+      if (ASSET_CLASSES.forex.includes(t)) return 'forex';
+      if (ASSET_CLASSES.crypto.includes(t)) return 'crypto';
+      return 'equities';
+    }
+
+    // Fetch API
+    async function fetchAPI(type, params = {}) {
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, ...params })
+      });
+      return res.json();
+    }
+
+    // Load data
+    async function loadData() {
+      const keys = Object.keys(DEPLOYERS);
+      const results = await Promise.all(keys.map(async key => {
+        try {
+          const d = await fetchAPI('metaAndAssetCtxs', { dex: key });
+          return { key, data: d };
+        } catch (e) {
+          console.warn(`Failed to fetch ${key}:`, e);
+          return { key, data: null };
+        }
+      }));
+
+      for (const { key, data: dexData } of results) {
+        if (!dexData || !Array.isArray(dexData) || dexData.length < 2) continue;
+
+        const [meta, ctxs] = dexData;
+        if (!meta?.universe || !ctxs) continue;
+
+        const collateralIdx = meta.collateralToken ?? 0;
+        const baseAsset = COLLATERAL_TOKENS[collateralIdx] || `TOKEN-${collateralIdx}`;
+
+        let vol = 0, oi = 0;
+        const markets = [];
+
+        for (let i = 0; i < meta.universe.length; i++) {
+          const asset = meta.universe[i];
+          const ctx = ctxs[i];
+          if (!ctx) continue;
+
+          const v = parseFloat(ctx.dayNtlVlm || 0);
+          const o = parseFloat(ctx.openInterest || 0) * parseFloat(ctx.markPx || 0);
+
+          vol += v;
+          oi += o;
+
+          markets.push({
+            name: asset.name,
+            volume: v,
+            oi: o,
+            price: parseFloat(ctx.markPx || 0),
+            deployer: key,
+            baseAsset
+          });
+        }
+
+        data.deployers[key] = {
+          ...DEPLOYERS[key],
+          key,
+          volume: vol,
+          oi,
+          markets,
+          marketCount: markets.length,
+          baseAsset
+        };
+
+        data.totals.volume += vol;
+        data.totals.oi += oi;
+        data.totals.markets += markets.length;
+      }
+
+    }
+
+    // Render functions
+    function renderStats() {
+      document.getElementById('totalVolume').textContent = fmt(data.totals.volume);
+      document.getElementById('totalOI').textContent = fmt(data.totals.oi);
+      document.getElementById('marketCount').textContent = data.totals.markets;
+      document.getElementById('deployerCount').textContent = Object.keys(data.deployers).length;
+    }
+
+    function renderAssetClassBreakdown() {
+      const classes = {
+        equities: { volume: 0, oi: 0 },
+        commodities: { volume: 0, oi: 0 },
+        forex: { volume: 0, oi: 0 },
+        crypto: { volume: 0, oi: 0 }
+      };
+      let totalVolume = 0;
+
+      for (const deployer of Object.values(data.deployers)) {
+        for (const market of (deployer.markets || [])) {
+          const ticker = normalizeTicker(market.name);
+          const assetClass = classifyAsset(ticker);
+          classes[assetClass].volume += market.volume || 0;
+          classes[assetClass].oi += market.oi || 0;
+          totalVolume += market.volume || 0;
+        }
+      }
+
+      const assetClassConfig = {
+        equities: { label: 'Equities' },
+        commodities: { label: 'Commodities' },
+        forex: { label: 'Forex' },
+        crypto: { label: 'Crypto' }
+      };
+
+      // Sort by volume (descending)
+      const sorted = Object.entries(classes)
+        .map(([key, data]) => ({
+          key,
+          volume: data.volume,
+          oi: data.oi,
+          percent: totalVolume > 0 ? (data.volume / totalVolume) * 100 : 0,
+          ...assetClassConfig[key]
+        }))
+        .sort((a, b) => b.volume - a.volume);
+
+      const container = document.getElementById('assetClassGrid');
+      container.innerHTML = sorted.map(item => `
+        <div class="asset-class-card glass" data-asset-class="${item.key}">
+          <div class="asset-class-name">${item.label}</div>
+          <div class="asset-class-stats">
+            <div class="asset-class-stat">
+              <div class="asset-class-stat-label">Volume 24h</div>
+              <div class="asset-class-stat-value">${fmt(item.volume || 0)}</div>
+            </div>
+            <div class="asset-class-stat">
+              <div class="asset-class-stat-label">Open Interest</div>
+              <div class="asset-class-stat-value">${fmt(item.oi || 0)}</div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // Add click handlers for asset class deep dive
+      container.querySelectorAll('.asset-class-card').forEach(card => {
+        card.addEventListener('click', () => {
+          openAssetClassModal(card.dataset.assetClass);
+        });
+      });
+    }
+
+    function renderVolumeByToken() {
+      const container = document.getElementById('volumeByToken');
+      const tokenData = {};
+      let totalVolume = 0;
+
+      for (const deployer of Object.values(data.deployers)) {
+        for (const market of (deployer.markets || [])) {
+          const ticker = normalizeTicker(market.name);
+          if (!tokenData[ticker]) {
+            tokenData[ticker] = { volume: 0, oi: 0, price: 0, color: getAssetColor(ticker) };
+          }
+          tokenData[ticker].volume += market.volume || 0;
+          tokenData[ticker].oi += market.oi || 0;
+          if (market.price > 0) tokenData[ticker].price = market.price;
+          totalVolume += market.volume || 0;
+        }
+      }
+
+      const sorted = Object.entries(tokenData)
+        .sort((a, b) => b[1].volume - a[1].volume)
+        .slice(0, 15);
+
+      container.innerHTML = sorted.map(([ticker, d]) => `
+        <div class="data-table-row" data-ticker="${ticker}">
+          <span class="token-name">
+            ${tokenIcon(ticker)}
+            <span class="token-info">
+              <span class="name">${getAssetName(ticker)}</span>
+              <span class="ticker">${ticker}</span>
+            </span>
+          </span>
+          <span class="value">${fmt(d.volume)}</span>
+          <span class="share">${totalVolume > 0 ? ((d.volume / totalVolume) * 100).toFixed(1) : 0}%</span>
+        </div>
+      `).join('');
+
+      container.querySelectorAll('.data-table-row').forEach(row => {
+        row.addEventListener('click', () => openTokenModal(row.dataset.ticker));
+      });
+    }
+
+    function renderOIByToken() {
+      const container = document.getElementById('oiByToken');
+      const tokenData = {};
+      let totalOI = 0;
+
+      for (const deployer of Object.values(data.deployers)) {
+        for (const market of (deployer.markets || [])) {
+          const ticker = normalizeTicker(market.name);
+          if (!tokenData[ticker]) {
+            tokenData[ticker] = { volume: 0, oi: 0, price: 0, color: getAssetColor(ticker) };
+          }
+          tokenData[ticker].volume += market.volume || 0;
+          tokenData[ticker].oi += market.oi || 0;
+          if (market.price > 0) tokenData[ticker].price = market.price;
+          totalOI += market.oi || 0;
+        }
+      }
+
+      const sorted = Object.entries(tokenData)
+        .sort((a, b) => b[1].oi - a[1].oi)
+        .slice(0, 15);
+
+      container.innerHTML = sorted.map(([ticker, d]) => `
+        <div class="data-table-row" data-ticker="${ticker}">
+          <span class="token-name">
+            ${tokenIcon(ticker)}
+            <span class="token-info">
+              <span class="name">${getAssetName(ticker)}</span>
+              <span class="ticker">${ticker}</span>
+            </span>
+          </span>
+          <span class="value">${fmt(d.oi)}</span>
+          <span class="share">${totalOI > 0 ? ((d.oi / totalOI) * 100).toFixed(1) : 0}%</span>
+        </div>
+      `).join('');
+
+      container.querySelectorAll('.data-table-row').forEach(row => {
+        row.addEventListener('click', () => openTokenModal(row.dataset.ticker));
+      });
+    }
+
+    function renderDeployers() {
+      const container = document.getElementById('deployerGrid');
+      const totalVolume = data.totals.volume;
+      const totalOI = data.totals.oi;
+
+      const deployers = Object.values(data.deployers).sort((a, b) => b.volume - a.volume);
+
+      container.innerHTML = deployers.map(d => {
+        const volPercent = totalVolume > 0 ? ((d.volume / totalVolume) * 100).toFixed(1) : 0;
+        const oiPercent = totalOI > 0 ? ((d.oi / totalOI) * 100).toFixed(1) : 0;
+
+        return `
+          <div class="deployer-card glass" data-deployer="${d.key}">
+            <div class="deployer-header">
+              <img src="${d.image || ''}" alt="${d.name}" class="deployer-logo" onerror="this.style.display='none'">
+              <span class="deployer-name">${d.name}</span>
+            </div>
+            <div class="deployer-stats">
+              <div class="deployer-stat">
+                <span class="deployer-stat-label">Volume</span>
+                <span class="deployer-stat-value">${fmt(d.volume)}</span>
+              </div>
+              <div class="deployer-stat">
+                <span class="deployer-stat-label">OI</span>
+                <span class="deployer-stat-value">${fmt(d.oi)}</span>
+              </div>
+              <div class="deployer-stat">
+                <span class="deployer-stat-label">Vol Share</span>
+                <span class="deployer-stat-value accent">${volPercent}%</span>
+              </div>
+              <div class="deployer-stat">
+                <span class="deployer-stat-label">OI Share</span>
+                <span class="deployer-stat-value accent">${oiPercent}%</span>
+              </div>
+              <div class="deployer-stat full-width">
+                <span class="deployer-stat-label">Markets Deployed</span>
+                <span class="deployer-stat-value">${d.marketCount}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.querySelectorAll('.deployer-card').forEach(card => {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', () => openDeployerModal(card.dataset.deployer));
+      });
+    }
+
+    function renderBaseAssets() {
+      const container = document.getElementById('baseAssetGrid');
+      const baseAssets = {};
+
+      for (const deployer of Object.values(data.deployers)) {
+        for (const market of (deployer.markets || [])) {
+          const base = market.baseAsset || 'USDC';
+          if (!baseAssets[base]) {
+            baseAssets[base] = { volume: 0, oi: 0, marketCount: 0, tickers: new Set() };
+          }
+          baseAssets[base].volume += market.volume || 0;
+          baseAssets[base].oi += market.oi || 0;
+          const ticker = normalizeTicker(market.name);
+          if (!baseAssets[base].tickers.has(ticker)) {
+            baseAssets[base].tickers.add(ticker);
+            baseAssets[base].marketCount++;
+          }
+        }
+      }
+
+      const totalVolume = data.totals.volume;
+      const totalOI = data.totals.oi;
+
+      const sorted = Object.entries(baseAssets).sort((a, b) => b[1].volume - a[1].volume);
+
+      container.innerHTML = sorted.map(([base, d]) => {
+        const volPercent = totalVolume > 0 ? ((d.volume / totalVolume) * 100).toFixed(1) : 0;
+        const oiPercent = totalOI > 0 ? ((d.oi / totalOI) * 100).toFixed(1) : 0;
+        const logo = BASE_ASSET_LOGOS[base];
+
+        return `
+          <div class="deployer-card glass" data-base="${base}">
+            <div class="deployer-header">
+              <img src="${logo || ''}" alt="${base}" class="deployer-logo" onerror="this.style.display='none'">
+              <span class="deployer-name">${base}</span>
+            </div>
+            <div class="deployer-stats">
+              <div class="deployer-stat">
+                <span class="deployer-stat-label">Volume</span>
+                <span class="deployer-stat-value">${fmt(d.volume)}</span>
+              </div>
+              <div class="deployer-stat">
+                <span class="deployer-stat-label">OI</span>
+                <span class="deployer-stat-value">${fmt(d.oi)}</span>
+              </div>
+              <div class="deployer-stat">
+                <span class="deployer-stat-label">Vol Share</span>
+                <span class="deployer-stat-value accent">${volPercent}%</span>
+              </div>
+              <div class="deployer-stat">
+                <span class="deployer-stat-label">OI Share</span>
+                <span class="deployer-stat-value accent">${oiPercent}%</span>
+              </div>
+              <div class="deployer-stat full-width">
+                <span class="deployer-stat-label">Markets</span>
+                <span class="deployer-stat-value">${d.marketCount}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.querySelectorAll('.deployer-card').forEach(card => {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', () => openBaseAssetModal(card.dataset.base));
+      });
+    }
+
+    function openBaseAssetModal(base, sortBy = 'volume') {
+      const modal = document.getElementById('modal');
+      const logo = BASE_ASSET_LOGOS[base];
+
+      const tokenData = {};
+      let totalVolume = 0, totalOI = 0;
+
+      for (const deployer of Object.values(data.deployers)) {
+        for (const market of (deployer.markets || [])) {
+          if ((market.baseAsset || 'USDC') !== base) continue;
+          const ticker = normalizeTicker(market.name);
+          if (!tokenData[ticker]) {
+            tokenData[ticker] = { ticker, name: getAssetName(ticker), volume: 0, oi: 0, color: getAssetColor(ticker) };
+          }
+          tokenData[ticker].volume += market.volume || 0;
+          tokenData[ticker].oi += market.oi || 0;
+          totalVolume += market.volume || 0;
+          totalOI += market.oi || 0;
+        }
+      }
+
+      const sorted = Object.values(tokenData).sort((a, b) =>
+        sortBy === 'volume' ? b.volume - a.volume : b.oi - a.oi
+      );
+
+      document.getElementById('modalTitle').innerHTML = `
+        <img src="${logo || ''}" alt="${base}" style="width: 28px; height: 28px; border-radius: 8px; object-fit: cover;" onerror="this.style.display='none'">
+        ${base} Markets
+      `;
+
+      document.getElementById('modalStats').innerHTML = `
+        <div class="modal-stat">
+          <div class="modal-stat-label">Total Volume 24h</div>
+          <div class="modal-stat-value">${fmt(totalVolume)}</div>
+        </div>
+        <div class="modal-stat">
+          <div class="modal-stat-label">Total OI</div>
+          <div class="modal-stat-value">${fmt(totalOI)}</div>
+        </div>
+      `;
+
+      document.querySelector('.modal-table-header').innerHTML = `
+        <span>Asset</span>
+        <span>Volume</span>
+        <span>OI</span>
+      `;
+
+      // Add sort toggle before modal-table
+      const existingToggle = document.querySelector('.sort-toggle');
+      if (existingToggle) existingToggle.remove();
+
+      const sortToggle = document.createElement('div');
+      sortToggle.className = 'sort-toggle';
+      sortToggle.innerHTML = `
+        <button class="sort-btn ${sortBy === 'volume' ? 'active' : ''}" data-sort="volume">Sort by Volume</button>
+        <button class="sort-btn ${sortBy === 'oi' ? 'active' : ''}" data-sort="oi">Sort by OI</button>
+      `;
+
+      const modalTable = document.querySelector('.modal-table');
+      modalTable.parentNode.insertBefore(sortToggle, modalTable);
+
+      // Add sort button handlers
+      sortToggle.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          openBaseAssetModal(base, btn.dataset.sort);
+        });
+      });
+
+      document.getElementById('modalPairs').innerHTML = sorted.map(t => `
+        <div class="modal-table-row" data-ticker="${t.ticker}" style="cursor: pointer;">
+          <div class="modal-deployer-info">
+            ${tokenIcon(t.ticker, 24)}
+            <span class="modal-deployer-name">${t.name}</span>
+          </div>
+          <span class="value">${fmt(t.volume)}</span>
+          <span class="value">${fmt(t.oi)}</span>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('#modalPairs .modal-table-row').forEach(row => {
+        row.addEventListener('click', () => openTokenModal(row.dataset.ticker));
+      });
+
+      modal.classList.add('active');
+    }
+
+    // Modal
+    function openDeployerModal(deployerKey, sortBy = 'volume') {
+      const modal = document.getElementById('modal');
+      const deployer = data.deployers[deployerKey];
+      if (!deployer) return;
+
+      const markets = (deployer.markets || [])
+        .map(m => ({
+          ticker: normalizeTicker(m.name),
+          name: getAssetName(normalizeTicker(m.name)),
+          price: m.price || 0,
+          volume: m.volume || 0,
+          oi: m.oi || 0,
+          color: getAssetColor(normalizeTicker(m.name))
+        }))
+        .sort((a, b) => sortBy === 'volume' ? b.volume - a.volume : b.oi - a.oi);
+
+      document.getElementById('modalTitle').innerHTML = `
+        <img src="${deployer.image || ''}" alt="${deployer.name}" class="modal-deployer-logo" style="width: 36px; height: 36px;" onerror="this.style.display='none'">
+        ${deployer.name}
+      `;
+
+      document.getElementById('modalStats').innerHTML = `
+        <div class="modal-stat">
+          <div class="modal-stat-label">Total Volume 24h</div>
+          <div class="modal-stat-value">${fmt(deployer.volume)}</div>
+        </div>
+        <div class="modal-stat">
+          <div class="modal-stat-label">Total OI</div>
+          <div class="modal-stat-value">${fmt(deployer.oi)}</div>
+        </div>
+      `;
+
+      // Update header for deployer view
+      document.querySelector('.modal-table-header').innerHTML = `
+        <span>Asset</span>
+        <span>Volume</span>
+        <span>OI</span>
+      `;
+
+      // Add sort toggle before modal-table
+      const existingToggle = document.querySelector('.sort-toggle');
+      if (existingToggle) existingToggle.remove();
+
+      const sortToggle = document.createElement('div');
+      sortToggle.className = 'sort-toggle';
+      sortToggle.innerHTML = `
+        <button class="sort-btn ${sortBy === 'volume' ? 'active' : ''}" data-sort="volume">Sort by Volume</button>
+        <button class="sort-btn ${sortBy === 'oi' ? 'active' : ''}" data-sort="oi">Sort by OI</button>
+      `;
+
+      const modalTable = document.querySelector('.modal-table');
+      modalTable.parentNode.insertBefore(sortToggle, modalTable);
+
+      // Add sort button handlers
+      sortToggle.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          openDeployerModal(deployerKey, btn.dataset.sort);
+        });
+      });
+
+      document.getElementById('modalPairs').innerHTML = markets.map(m => `
+        <div class="modal-table-row" data-ticker="${m.ticker}" style="cursor: pointer;">
+          <div class="modal-deployer-info">
+            ${tokenIcon(m.ticker, 24)}
+            <span class="modal-deployer-name">${m.name}</span>
+          </div>
+          <span class="value">${fmt(m.volume)}</span>
+          <span class="value">${fmt(m.oi)}</span>
+        </div>
+      `).join('');
+
+      // Add click handlers to market rows
+      document.querySelectorAll('#modalPairs .modal-table-row').forEach(row => {
+        row.addEventListener('click', () => {
+          openTokenModal(row.dataset.ticker);
+        });
+      });
+
+      modal.classList.add('active');
+    }
+
+    function openTokenModal(ticker) {
+      const modal = document.getElementById('modal');
+      const pairs = [];
+      let totalVolume = 0, totalOI = 0;
+
+      for (const deployer of Object.values(data.deployers)) {
+        for (const market of (deployer.markets || [])) {
+          if (normalizeTicker(market.name) === ticker) {
+            pairs.push({
+              deployerName: deployer.name,
+              deployerImage: deployer.image,
+              deployerKey: deployer.key,
+              volume: market.volume || 0,
+              oi: market.oi || 0
+            });
+            totalVolume += market.volume || 0;
+            totalOI += market.oi || 0;
+          }
+        }
+      }
+
+      pairs.sort((a, b) => b.volume - a.volume);
+
+      document.getElementById('modalTitle').innerHTML = `
+        ${tokenIcon(ticker)}
+        ${getAssetName(ticker)}
+      `;
+
+      document.getElementById('modalStats').innerHTML = `
+        <div class="modal-stat">
+          <div class="modal-stat-label">Total Volume 24h</div>
+          <div class="modal-stat-value">${fmt(totalVolume)}</div>
+        </div>
+        <div class="modal-stat">
+          <div class="modal-stat-label">Total OI</div>
+          <div class="modal-stat-value">${fmt(totalOI)}</div>
+        </div>
+      `;
+
+      // Update header for token view
+      document.querySelector('.modal-table-header').innerHTML = `
+        <span>Deployer</span>
+        <span>Volume</span>
+        <span>OI</span>
+      `;
+
+      // Remove sort toggle if present
+      const existingToggle = document.querySelector('.sort-toggle');
+      if (existingToggle) existingToggle.remove();
+
+      document.getElementById('modalPairs').innerHTML = pairs.map(p => `
+        <div class="modal-table-row">
+          <div class="modal-deployer-info">
+            <img src="${p.deployerImage || ''}" alt="${p.deployerName}" class="modal-deployer-logo" onerror="this.style.display='none'">
+            <span class="modal-deployer-name">${p.deployerName}</span>
+          </div>
+          <span class="value">${fmt(p.volume)}</span>
+          <span class="value">${fmt(p.oi)}</span>
+        </div>
+      `).join('');
+
+      modal.classList.add('active');
+    }
+
+    function openAssetClassModal(assetClass, sortBy = 'volume') {
+      const modal = document.getElementById('modal');
+
+      const assetClassLabels = {
+        equities: 'Equities',
+        commodities: 'Commodities',
+        forex: 'Forex',
+        crypto: 'Crypto'
+      };
+
+      // Gather all tokens in this asset class
+      const tokenData = {};
+
+      for (const deployer of Object.values(data.deployers)) {
+        for (const market of (deployer.markets || [])) {
+          const ticker = normalizeTicker(market.name);
+          if (classifyAsset(ticker) === assetClass) {
+            if (!tokenData[ticker]) {
+              tokenData[ticker] = {
+                volume: 0,
+                oi: 0,
+                price: 0,
+                color: getAssetColor(ticker),
+                name: getAssetName(ticker)
+              };
+            }
+            tokenData[ticker].volume += market.volume || 0;
+            tokenData[ticker].oi += market.oi || 0;
+            if (market.price > 0) tokenData[ticker].price = market.price;
+          }
+        }
+      }
+
+      // Calculate totals
+      let totalVolume = 0, totalOI = 0;
+      Object.values(tokenData).forEach(t => {
+        totalVolume += t.volume;
+        totalOI += t.oi;
+      });
+
+      // Sort tokens
+      const sorted = Object.entries(tokenData)
+        .map(([ticker, d]) => ({ ticker, ...d }))
+        .sort((a, b) => sortBy === 'volume' ? b.volume - a.volume : b.oi - a.oi);
+
+      document.getElementById('modalTitle').innerHTML = `${assetClassLabels[assetClass]}`;
+
+      document.getElementById('modalStats').innerHTML = `
+        <div class="modal-stat">
+          <div class="modal-stat-label">Total Volume 24h</div>
+          <div class="modal-stat-value">${fmt(totalVolume)}</div>
+        </div>
+        <div class="modal-stat">
+          <div class="modal-stat-label">Total OI</div>
+          <div class="modal-stat-value">${fmt(totalOI)}</div>
+        </div>
+      `;
+
+      // Update header with sort toggle
+      document.querySelector('.modal-table-header').innerHTML = `
+        <span>Asset</span>
+        <span>Volume</span>
+        <span>OI</span>
+      `;
+
+      // Add sort toggle before modal-table
+      const existingToggle = document.querySelector('.sort-toggle');
+      if (existingToggle) existingToggle.remove();
+
+      const sortToggle = document.createElement('div');
+      sortToggle.className = 'sort-toggle';
+      sortToggle.innerHTML = `
+        <button class="sort-btn ${sortBy === 'volume' ? 'active' : ''}" data-sort="volume">Sort by Volume</button>
+        <button class="sort-btn ${sortBy === 'oi' ? 'active' : ''}" data-sort="oi">Sort by OI</button>
+      `;
+
+      const modalTable = document.querySelector('.modal-table');
+      modalTable.parentNode.insertBefore(sortToggle, modalTable);
+
+      // Add sort button handlers
+      sortToggle.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          openAssetClassModal(assetClass, btn.dataset.sort);
+        });
+      });
+
+      document.getElementById('modalPairs').innerHTML = sorted.map(t => `
+        <div class="modal-table-row" data-ticker="${t.ticker}" style="cursor: pointer;">
+          <div class="modal-deployer-info">
+            ${tokenIcon(t.ticker, 24)}
+            <span class="modal-deployer-name">${t.name}</span>
+          </div>
+          <span class="value">${fmt(t.volume)}</span>
+          <span class="value">${fmt(t.oi)}</span>
+        </div>
+      `).join('');
+
+      // Add click handlers to rows to open token modal
+      document.querySelectorAll('#modalPairs .modal-table-row').forEach(row => {
+        row.addEventListener('click', () => openTokenModal(row.dataset.ticker));
+      });
+
+      modal.classList.add('active');
+    }
+
+    function closeModal() {
+      // Clean up sort toggle when closing
+      const sortToggle = document.querySelector('.sort-toggle');
+      if (sortToggle) sortToggle.remove();
+      document.getElementById('modal').classList.remove('active');
+    }
+
+    // Compare functions
+    function getAllTokenData() {
+      const tokenData = {};
+      for (const deployer of Object.values(data.deployers)) {
+        for (const market of (deployer.markets || [])) {
+          const ticker = normalizeTicker(market.name);
+          if (!tokenData[ticker]) {
+            tokenData[ticker] = { volume: 0, oi: 0, price: 0, color: getAssetColor(ticker), name: getAssetName(ticker) };
+          }
+          tokenData[ticker].volume += market.volume || 0;
+          tokenData[ticker].oi += market.oi || 0;
+          if (market.price > 0) tokenData[ticker].price = market.price;
+        }
+      }
+      return tokenData;
+    }
+
+    function openCompareModal() {
+      const modal = document.getElementById('compareModal');
+      const tokenData = getAllTokenData();
+      const sorted = Object.entries(tokenData).sort((a, b) => b[1].volume - a[1].volume);
+
+      const select1 = document.getElementById('compareAsset1');
+      const select2 = document.getElementById('compareAsset2');
+
+      const options = sorted.map(([ticker, d]) =>
+        `<option value="${ticker}">${d.name} (${ticker})</option>`
+      ).join('');
+
+      select1.innerHTML = options;
+      select2.innerHTML = options;
+
+      // Default to top 2 by volume
+      if (sorted.length >= 2) {
+        select1.value = sorted[0][0];
+        select2.value = sorted[1][0];
+      }
+
+      updateComparison();
+      modal.classList.add('active');
+    }
+
+    function closeCompareModal() {
+      document.getElementById('compareModal').classList.remove('active');
+    }
+
+    function openCompareDeployersModal() {
+      const modal = document.getElementById('compareDeployersModal');
+      const entries = Object.entries(DEPLOYERS).filter(([key]) => data.deployers[key]);
+      const sorted = entries.sort((a, b) => {
+        const volA = data.deployers[a[0]]?.volume || 0;
+        const volB = data.deployers[b[0]]?.volume || 0;
+        return volB - volA;
+      });
+
+      const options = sorted.map(([key, d]) =>
+        `<option value="${key}">${d.name}</option>`
+      ).join('');
+
+      const select1 = document.getElementById('compareDeployer1');
+      const select2 = document.getElementById('compareDeployer2');
+      select1.innerHTML = options;
+      select2.innerHTML = options;
+
+      if (sorted.length >= 2) {
+        select1.value = sorted[0][0];
+        select2.value = sorted[1][0];
+      }
+
+      updateDeployerComparison();
+      modal.classList.add('active');
+    }
+
+    function closeCompareDeployersModal() {
+      document.getElementById('compareDeployersModal').classList.remove('active');
+    }
+
+    function updateDeployerComparison() {
+      const key1 = document.getElementById('compareDeployer1').value;
+      const key2 = document.getElementById('compareDeployer2').value;
+      const d1 = data.deployers[key1];
+      const d2 = data.deployers[key2];
+      if (!d1 || !d2) return;
+
+      const dep1 = DEPLOYERS[key1];
+      const dep2 = DEPLOYERS[key2];
+
+      const volTotal = d1.volume + d2.volume;
+      const oiTotal = d1.oi + d2.oi;
+      const vol1Pct = volTotal > 0 ? (d1.volume / volTotal) * 100 : 50;
+      const oi1Pct = oiTotal > 0 ? (d1.oi / oiTotal) * 100 : 50;
+
+      document.getElementById('compareDeployersResults').innerHTML = `
+        <div class="compare-grid">
+          <div class="compare-card">
+            <div class="compare-card-header">
+              <img src="${dep1.image}" alt="${dep1.name}" style="width: 28px; height: 28px; border-radius: 8px; object-fit: cover;" onerror="this.style.display='none'">
+              <div>
+                <div class="compare-card-name">${dep1.name}</div>
+                <div class="compare-card-ticker">${(d1.markets || []).length} markets</div>
+              </div>
+            </div>
+            <div class="compare-metrics">
+              <div class="compare-metric">
+                <span class="compare-metric-label">Volume 24h</span>
+                <span class="compare-metric-value ${d1.volume > d2.volume ? 'winner' : ''}">${fmt(d1.volume)}</span>
+              </div>
+              <div class="compare-metric">
+                <span class="compare-metric-label">Open Interest</span>
+                <span class="compare-metric-value ${d1.oi > d2.oi ? 'winner' : ''}">${fmt(d1.oi)}</span>
+              </div>
+              <div class="compare-metric">
+                <span class="compare-metric-label">Vol/OI Ratio</span>
+                <span class="compare-metric-value">${d1.oi > 0 ? (d1.volume / d1.oi).toFixed(2) + 'x' : '-'}</span>
+              </div>
+            </div>
+          </div>
+          <div class="compare-card">
+            <div class="compare-card-header">
+              <img src="${dep2.image}" alt="${dep2.name}" style="width: 28px; height: 28px; border-radius: 8px; object-fit: cover;" onerror="this.style.display='none'">
+              <div>
+                <div class="compare-card-name">${dep2.name}</div>
+                <div class="compare-card-ticker">${(d2.markets || []).length} markets</div>
+              </div>
+            </div>
+            <div class="compare-metrics">
+              <div class="compare-metric">
+                <span class="compare-metric-label">Volume 24h</span>
+                <span class="compare-metric-value ${d2.volume > d1.volume ? 'winner' : ''}">${fmt(d2.volume)}</span>
+              </div>
+              <div class="compare-metric">
+                <span class="compare-metric-label">Open Interest</span>
+                <span class="compare-metric-value ${d2.oi > d1.oi ? 'winner' : ''}">${fmt(d2.oi)}</span>
+              </div>
+              <div class="compare-metric">
+                <span class="compare-metric-label">Vol/OI Ratio</span>
+                <span class="compare-metric-value">${d2.oi > 0 ? (d2.volume / d2.oi).toFixed(2) + 'x' : '-'}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="compare-bar-container">
+          <div class="compare-bar-label">Volume Share</div>
+          <div class="compare-bar">
+            <div class="compare-bar-left" style="width: ${vol1Pct}%"></div>
+            <div class="compare-bar-right" style="width: ${100 - vol1Pct}%"></div>
+          </div>
+          <div class="compare-bar-legend">
+            <span>${dep1.name}: ${vol1Pct.toFixed(1)}%</span>
+            <span>${dep2.name}: ${(100 - vol1Pct).toFixed(1)}%</span>
+          </div>
+        </div>
+
+        <div class="compare-bar-container" style="margin-top: 16px; padding-top: 16px;">
+          <div class="compare-bar-label">Open Interest Share</div>
+          <div class="compare-bar">
+            <div class="compare-bar-left" style="width: ${oi1Pct}%"></div>
+            <div class="compare-bar-right" style="width: ${100 - oi1Pct}%"></div>
+          </div>
+          <div class="compare-bar-legend">
+            <span>${dep1.name}: ${oi1Pct.toFixed(1)}%</span>
+            <span>${dep2.name}: ${(100 - oi1Pct).toFixed(1)}%</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function getBaseAssetData() {
+      const baseAssets = {};
+      for (const deployer of Object.values(data.deployers)) {
+        for (const market of (deployer.markets || [])) {
+          const base = market.baseAsset || 'USDC';
+          if (!baseAssets[base]) {
+            baseAssets[base] = { volume: 0, oi: 0, marketCount: 0, tickers: new Set() };
+          }
+          baseAssets[base].volume += market.volume || 0;
+          baseAssets[base].oi += market.oi || 0;
+          const ticker = normalizeTicker(market.name);
+          if (!baseAssets[base].tickers.has(ticker)) {
+            baseAssets[base].tickers.add(ticker);
+            baseAssets[base].marketCount++;
+          }
+        }
+      }
+      return baseAssets;
+    }
+
+    function openCompareBaseAssetsModal() {
+      const modal = document.getElementById('compareBaseAssetsModal');
+      const baseAssets = getBaseAssetData();
+      const sorted = Object.entries(baseAssets).sort((a, b) => b[1].volume - a[1].volume);
+
+      const options = sorted.map(([base]) =>
+        `<option value="${base}">${base}</option>`
+      ).join('');
+
+      const select1 = document.getElementById('compareBase1');
+      const select2 = document.getElementById('compareBase2');
+      select1.innerHTML = options;
+      select2.innerHTML = options;
+
+      if (sorted.length >= 2) {
+        select1.value = sorted[0][0];
+        select2.value = sorted[1][0];
+      }
+
+      updateBaseAssetComparison();
+      modal.classList.add('active');
+    }
+
+    function closeCompareBaseAssetsModal() {
+      document.getElementById('compareBaseAssetsModal').classList.remove('active');
+    }
+
+    function updateBaseAssetComparison() {
+      const key1 = document.getElementById('compareBase1').value;
+      const key2 = document.getElementById('compareBase2').value;
+      const baseAssets = getBaseAssetData();
+      const b1 = baseAssets[key1];
+      const b2 = baseAssets[key2];
+      if (!b1 || !b2) return;
+
+      const logo1 = BASE_ASSET_LOGOS[key1] || '';
+      const logo2 = BASE_ASSET_LOGOS[key2] || '';
+
+      const volTotal = b1.volume + b2.volume;
+      const oiTotal = b1.oi + b2.oi;
+      const vol1Pct = volTotal > 0 ? (b1.volume / volTotal) * 100 : 50;
+      const oi1Pct = oiTotal > 0 ? (b1.oi / oiTotal) * 100 : 50;
+
+      document.getElementById('compareBaseAssetsResults').innerHTML = `
+        <div class="compare-grid">
+          <div class="compare-card">
+            <div class="compare-card-header">
+              <img src="${logo1}" alt="${key1}" style="width: 28px; height: 28px; border-radius: 8px; object-fit: cover;" onerror="this.style.display='none'">
+              <div>
+                <div class="compare-card-name">${key1}</div>
+                <div class="compare-card-ticker">${b1.marketCount} markets</div>
+              </div>
+            </div>
+            <div class="compare-metrics">
+              <div class="compare-metric">
+                <span class="compare-metric-label">Volume 24h</span>
+                <span class="compare-metric-value ${b1.volume > b2.volume ? 'winner' : ''}">${fmt(b1.volume)}</span>
+              </div>
+              <div class="compare-metric">
+                <span class="compare-metric-label">Open Interest</span>
+                <span class="compare-metric-value ${b1.oi > b2.oi ? 'winner' : ''}">${fmt(b1.oi)}</span>
+              </div>
+              <div class="compare-metric">
+                <span class="compare-metric-label">Vol/OI Ratio</span>
+                <span class="compare-metric-value">${b1.oi > 0 ? (b1.volume / b1.oi).toFixed(2) + 'x' : '-'}</span>
+              </div>
+            </div>
+          </div>
+          <div class="compare-card">
+            <div class="compare-card-header">
+              <img src="${logo2}" alt="${key2}" style="width: 28px; height: 28px; border-radius: 8px; object-fit: cover;" onerror="this.style.display='none'">
+              <div>
+                <div class="compare-card-name">${key2}</div>
+                <div class="compare-card-ticker">${b2.marketCount} markets</div>
+              </div>
+            </div>
+            <div class="compare-metrics">
+              <div class="compare-metric">
+                <span class="compare-metric-label">Volume 24h</span>
+                <span class="compare-metric-value ${b2.volume > b1.volume ? 'winner' : ''}">${fmt(b2.volume)}</span>
+              </div>
+              <div class="compare-metric">
+                <span class="compare-metric-label">Open Interest</span>
+                <span class="compare-metric-value ${b2.oi > b1.oi ? 'winner' : ''}">${fmt(b2.oi)}</span>
+              </div>
+              <div class="compare-metric">
+                <span class="compare-metric-label">Vol/OI Ratio</span>
+                <span class="compare-metric-value">${b2.oi > 0 ? (b2.volume / b2.oi).toFixed(2) + 'x' : '-'}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="compare-bar-container">
+          <div class="compare-bar-label">Volume Share</div>
+          <div class="compare-bar">
+            <div class="compare-bar-left" style="width: ${vol1Pct}%"></div>
+            <div class="compare-bar-right" style="width: ${100 - vol1Pct}%"></div>
+          </div>
+          <div class="compare-bar-legend">
+            <span>${key1}: ${vol1Pct.toFixed(1)}%</span>
+            <span>${key2}: ${(100 - vol1Pct).toFixed(1)}%</span>
+          </div>
+        </div>
+
+        <div class="compare-bar-container" style="margin-top: 16px; padding-top: 16px;">
+          <div class="compare-bar-label">Open Interest Share</div>
+          <div class="compare-bar">
+            <div class="compare-bar-left" style="width: ${oi1Pct}%"></div>
+            <div class="compare-bar-right" style="width: ${100 - oi1Pct}%"></div>
+          </div>
+          <div class="compare-bar-legend">
+            <span>${key1}: ${oi1Pct.toFixed(1)}%</span>
+            <span>${key2}: ${(100 - oi1Pct).toFixed(1)}%</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function updateComparison() {
+      const ticker1 = document.getElementById('compareAsset1').value;
+      const ticker2 = document.getElementById('compareAsset2').value;
+      const tokenData = getAllTokenData();
+
+      const asset1 = tokenData[ticker1];
+      const asset2 = tokenData[ticker2];
+
+      if (!asset1 || !asset2) return;
+
+      const volTotal = asset1.volume + asset2.volume;
+      const oiTotal = asset1.oi + asset2.oi;
+      const vol1Pct = volTotal > 0 ? (asset1.volume / volTotal) * 100 : 50;
+      const oi1Pct = oiTotal > 0 ? (asset1.oi / oiTotal) * 100 : 50;
+
+      document.getElementById('compareResults').innerHTML = `
+        <div class="compare-grid">
+          <div class="compare-card">
+            <div class="compare-card-header">
+              ${tokenIcon(ticker1)}
+              <div>
+                <div class="compare-card-name">${asset1.name}</div>
+                <div class="compare-card-ticker">${ticker1}</div>
+              </div>
+            </div>
+            <div class="compare-metrics">
+              <div class="compare-metric">
+                <span class="compare-metric-label">Volume 24h</span>
+                <span class="compare-metric-value ${asset1.volume > asset2.volume ? 'winner' : ''}">${fmt(asset1.volume)}</span>
+              </div>
+              <div class="compare-metric">
+                <span class="compare-metric-label">Open Interest</span>
+                <span class="compare-metric-value ${asset1.oi > asset2.oi ? 'winner' : ''}">${fmt(asset1.oi)}</span>
+              </div>
+              <div class="compare-metric">
+                <span class="compare-metric-label">Vol/OI Ratio</span>
+                <span class="compare-metric-value">${asset1.oi > 0 ? (asset1.volume / asset1.oi).toFixed(2) + 'x' : '-'}</span>
+              </div>
+            </div>
+          </div>
+          <div class="compare-card">
+            <div class="compare-card-header">
+              ${tokenIcon(ticker2)}
+              <div>
+                <div class="compare-card-name">${asset2.name}</div>
+                <div class="compare-card-ticker">${ticker2}</div>
+              </div>
+            </div>
+            <div class="compare-metrics">
+              <div class="compare-metric">
+                <span class="compare-metric-label">Volume 24h</span>
+                <span class="compare-metric-value ${asset2.volume > asset1.volume ? 'winner' : ''}">${fmt(asset2.volume)}</span>
+              </div>
+              <div class="compare-metric">
+                <span class="compare-metric-label">Open Interest</span>
+                <span class="compare-metric-value ${asset2.oi > asset1.oi ? 'winner' : ''}">${fmt(asset2.oi)}</span>
+              </div>
+              <div class="compare-metric">
+                <span class="compare-metric-label">Vol/OI Ratio</span>
+                <span class="compare-metric-value">${asset2.oi > 0 ? (asset2.volume / asset2.oi).toFixed(2) + 'x' : '-'}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="compare-bar-container">
+          <div class="compare-bar-label">Volume Share</div>
+          <div class="compare-bar">
+            <div class="compare-bar-left" style="width: ${vol1Pct}%"></div>
+            <div class="compare-bar-right" style="width: ${100 - vol1Pct}%"></div>
+          </div>
+          <div class="compare-bar-legend">
+            <span>${ticker1}: ${vol1Pct.toFixed(1)}%</span>
+            <span>${ticker2}: ${(100 - vol1Pct).toFixed(1)}%</span>
+          </div>
+        </div>
+
+        <div class="compare-bar-container" style="margin-top: 16px; padding-top: 16px;">
+          <div class="compare-bar-label">Open Interest Share</div>
+          <div class="compare-bar">
+            <div class="compare-bar-left" style="width: ${oi1Pct}%"></div>
+            <div class="compare-bar-right" style="width: ${100 - oi1Pct}%"></div>
+          </div>
+          <div class="compare-bar-legend">
+            <span>${ticker1}: ${oi1Pct.toFixed(1)}%</span>
+            <span>${ticker2}: ${(100 - oi1Pct).toFixed(1)}%</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // ==========================================
+    // Historical Charts
+    // ==========================================
+
+    let volumeChart = null;
+    let oiChart = null;
+    let chartDays = 30;
+
+    const chartDefaults = {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { intersect: false, mode: 'index' },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(20, 20, 30, 0.95)',
+          borderColor: 'rgba(255, 255, 255, 0.1)',
+          borderWidth: 1,
+          titleFont: { family: 'Inter', size: 12 },
+          bodyFont: { family: 'Inter', size: 12 },
+          padding: 12,
+          cornerRadius: 8,
+          callbacks: {
+            label: ctx => ' ' + fmt(ctx.parsed.y)
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(255, 255, 255, 0.04)' },
+          ticks: {
+            color: 'rgba(255, 255, 255, 0.4)',
+            font: { family: 'Inter', size: 10 },
+            maxTicksLimit: 8
+          }
+        },
+        y: {
+          grid: { color: 'rgba(255, 255, 255, 0.04)' },
+          ticks: {
+            color: 'rgba(255, 255, 255, 0.4)',
+            font: { family: 'Inter', size: 10 },
+            callback: v => fmt(v)
+          }
+        }
+      }
+    };
+
+    function createGradient(ctx, color) {
+      const gradient = ctx.createLinearGradient(0, 0, 0, 220);
+      gradient.addColorStop(0, color.replace('1)', '0.3)'));
+      gradient.addColorStop(1, color.replace('1)', '0.02)'));
+      return gradient;
+    }
+
+    async function loadCharts(days) {
+      chartDays = days || chartDays;
+
+      if (typeof Chart === 'undefined') return; // Chart.js not loaded yet
+
+      try {
+        const res = await fetch(`/.netlify/functions/history?type=totals&days=${chartDays}`);
+        if (!res.ok) throw new Error('History API error');
+        const historyData = await res.json();
+
+        if (!historyData || historyData.length === 0) {
+          document.getElementById('chartsSection').style.display = 'none';
+          return;
+        }
+
+        document.getElementById('chartsSection').style.display = '';
+
+        const labels = historyData.map(d => {
+          const date = new Date(d.timestamp);
+          return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        });
+        const volumes = historyData.map(d => d.volume);
+        const ois = historyData.map(d => d.oi);
+
+        // Volume Chart
+        const volCanvas = document.getElementById('volumeChart');
+        const volCtx = volCanvas.getContext('2d');
+
+        if (volumeChart) volumeChart.destroy();
+        volumeChart = new Chart(volCtx, {
+          type: 'line',
+          data: {
+            labels,
+            datasets: [{
+              data: volumes,
+              borderColor: 'rgba(99, 102, 241, 1)',
+              backgroundColor: createGradient(volCtx, 'rgba(99, 102, 241, 1)'),
+              borderWidth: 2,
+              fill: true,
+              tension: 0.3,
+              pointRadius: historyData.length > 30 ? 0 : 3,
+              pointHoverRadius: 5,
+              pointBackgroundColor: 'rgba(99, 102, 241, 1)'
+            }]
+          },
+          options: chartDefaults
+        });
+
+        // OI Chart
+        const oiCanvas = document.getElementById('oiChart');
+        const oiCtx = oiCanvas.getContext('2d');
+
+        if (oiChart) oiChart.destroy();
+        oiChart = new Chart(oiCtx, {
+          type: 'line',
+          data: {
+            labels,
+            datasets: [{
+              data: ois,
+              borderColor: 'rgba(34, 197, 94, 1)',
+              backgroundColor: createGradient(oiCtx, 'rgba(34, 197, 94, 1)'),
+              borderWidth: 2,
+              fill: true,
+              tension: 0.3,
+              pointRadius: historyData.length > 30 ? 0 : 3,
+              pointHoverRadius: 5,
+              pointBackgroundColor: 'rgba(34, 197, 94, 1)'
+            }]
+          },
+          options: chartDefaults
+        });
+
+      } catch (e) {
+        console.warn('Charts unavailable:', e.message);
+        document.getElementById('chartsSection').style.display = 'none';
+      }
+    }
+
+    // Initialize
+    async function init() {
+      document.getElementById('modalClose').addEventListener('click', closeModal);
+      document.getElementById('modal').addEventListener('click', e => {
+        if (e.target === e.currentTarget) closeModal();
+      });
+
+      // Compare modal events
+      document.getElementById('compareBtn').addEventListener('click', openCompareModal);
+      document.getElementById('compareModalClose').addEventListener('click', closeCompareModal);
+      document.getElementById('compareModal').addEventListener('click', e => {
+        if (e.target === e.currentTarget) closeCompareModal();
+      });
+      document.getElementById('compareAsset1').addEventListener('change', updateComparison);
+      document.getElementById('compareAsset2').addEventListener('change', updateComparison);
+
+      // Compare deployers modal events
+      document.getElementById('compareDeployersBtn').addEventListener('click', openCompareDeployersModal);
+      document.getElementById('compareDeployersModalClose').addEventListener('click', closeCompareDeployersModal);
+      document.getElementById('compareDeployersModal').addEventListener('click', e => {
+        if (e.target === e.currentTarget) closeCompareDeployersModal();
+      });
+      document.getElementById('compareDeployer1').addEventListener('change', updateDeployerComparison);
+      document.getElementById('compareDeployer2').addEventListener('change', updateDeployerComparison);
+
+      // Compare base assets modal events
+      document.getElementById('compareBaseAssetsBtn').addEventListener('click', openCompareBaseAssetsModal);
+      document.getElementById('compareBaseAssetsModalClose').addEventListener('click', closeCompareBaseAssetsModal);
+      document.getElementById('compareBaseAssetsModal').addEventListener('click', e => {
+        if (e.target === e.currentTarget) closeCompareBaseAssetsModal();
+      });
+      document.getElementById('compareBase1').addEventListener('change', updateBaseAssetComparison);
+      document.getElementById('compareBase2').addEventListener('change', updateBaseAssetComparison);
+
+      // Chart period toggle
+      document.querySelectorAll('#chartPeriodToggle .chart-period-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#chartPeriodToggle .chart-period-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          loadCharts(parseInt(btn.dataset.days));
+        });
+      });
+
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          closeModal();
+          closeCompareModal();
+          closeCompareDeployersModal();
+          closeCompareBaseAssetsModal();
+        }
+      });
+
+      try {
+        await loadData();
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('content').classList.remove('hidden');
+
+        // Show compare buttons after data loads
+        document.getElementById('headerButtons').style.display = 'flex';
+
+        renderStats();
+        renderAssetClassBreakdown();
+        renderVolumeByToken();
+        renderOIByToken();
+        renderDeployers();
+        renderBaseAssets();
+
+        // Load charts (non-blocking — won't fail if no history yet)
+        loadCharts(30);
+      } catch (e) {
+        console.error('Failed to load:', e);
+        document.getElementById('loading').innerHTML = `
+          <div style="color: #ef4444; text-align: center;">
+            <p style="margin-bottom: 16px;">Failed to load data</p>
+            <button onclick="location.reload()" style="padding: 10px 20px; background: var(--accent); color: #fff; border: none; border-radius: 10px; cursor: pointer; font-weight: 500;">Retry</button>
+          </div>
+        `;
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

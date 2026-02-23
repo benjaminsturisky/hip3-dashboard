@@ -1,0 +1,25 @@
+name: Collect HIP-3 Data
+
+on:
+  schedule:
+    # Every 4 hours at :05 past the hour
+    - cron: '5 */4 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger data collection
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+            "${{ secrets.SITE_URL }}/.netlify/functions/collect" \
+            -H "Authorization: Bearer ${{ secrets.COLLECT_SECRET }}" \
+            -H "Content-Type: application/json" \
+            --max-time 60)
+          echo "Response code: $response"
+          if [ "$response" != "200" ]; then
+            echo "Collection failed with status $response"
+            exit 1
+          fi
+          echo "Collection successful"

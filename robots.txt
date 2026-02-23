@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /backend/
+Disallow: /netlify/
+
+Sitemap: https://hypetrad.com/sitemap.xml
