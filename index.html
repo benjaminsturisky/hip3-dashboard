@@ -692,6 +692,101 @@
       color: var(--text-primary);
     }
 
+    /* Price Impact */
+    .price-impact-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .price-impact-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .price-impact-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .price-impact-spread {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .price-impact-spread .spread-value {
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .price-impact-grid {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .price-impact-grid-header {
+      display: grid;
+      grid-template-columns: 70px 1fr 1fr;
+      gap: 12px;
+      padding: 10px 16px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .price-impact-grid-header span:not(:first-child) {
+      text-align: right;
+    }
+
+    .price-impact-row {
+      display: grid;
+      grid-template-columns: 70px 1fr 1fr;
+      gap: 12px;
+      padding: 9px 16px;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+    }
+
+    .price-impact-row:last-child {
+      border-bottom: none;
+    }
+
+    .price-impact-row .size-label {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .price-impact-row .impact-value {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .impact-green { color: #22c55e; }
+    .impact-yellow { color: #eab308; }
+    .impact-red { color: #ef4444; }
+    .impact-na { color: var(--text-muted); }
+
+    .price-impact-loading {
+      padding: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      animation: piPulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes piPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
     .modal-table {
       background: rgba(255, 255, 255, 0.02);
       border-radius: 12px;
@@ -1309,6 +1404,23 @@
 
       .modal-deployer-name {
         font-size: 13px;
+      }
+
+      .price-impact-section {
+        margin-top: 16px;
+        padding-top: 16px;
+      }
+
+      .price-impact-grid-header {
+        grid-template-columns: 60px 1fr 1fr;
+        padding: 8px 12px;
+        font-size: 10px;
+      }
+
+      .price-impact-row {
+        grid-template-columns: 60px 1fr 1fr;
+        padding: 7px 12px;
+        font-size: 12px;
       }
 
       .footer {
@@ -2100,6 +2212,136 @@
       return res.json();
     }
 
+    // L2 Book & Price Impact
+    async function fetchL2Book(coin) {
+      return fetchAPI('l2Book', { coin });
+    }
+
+    function calcPriceImpact(book, sizeUSD, side) {
+      // side: 'buy' walks asks (levels[1]), 'sell' walks bids (levels[0])
+      const levels = side === 'buy' ? book.levels[1] : book.levels[0];
+      if (!levels || levels.length === 0) return { impactPct: null, filled: false };
+
+      const bestPx = parseFloat(levels[0].px);
+      let remaining = sizeUSD;
+      let filledQty = 0;
+      let totalCost = 0;
+
+      for (const level of levels) {
+        const px = parseFloat(level.px);
+        const sz = parseFloat(level.sz);
+        const levelValue = px * sz;
+
+        if (remaining <= levelValue) {
+          const qty = remaining / px;
+          filledQty += qty;
+          totalCost += remaining;
+          remaining = 0;
+          break;
+        } else {
+          filledQty += sz;
+          totalCost += levelValue;
+          remaining -= levelValue;
+        }
+      }
+
+      if (filledQty === 0) return { impactPct: null, filled: false };
+
+      const avgPx = totalCost / filledQty;
+      const impactPct = Math.abs((avgPx - bestPx) / bestPx) * 100;
+      return { impactPct, filled: remaining <= 0 };
+    }
+
+    function impactClass(pct) {
+      if (pct === null) return 'impact-na';
+      if (pct < 0.05) return 'impact-green';
+      if (pct < 0.2) return 'impact-yellow';
+      return 'impact-red';
+    }
+
+    function fmtImpact(result) {
+      if (result.impactPct === null) return '<span class="impact-na">\u2014</span>';
+      const prefix = result.filled ? '' : '>';
+      return `<span class="${impactClass(result.impactPct)}">${prefix}${result.impactPct.toFixed(3)}%</span>`;
+    }
+
+    const IMPACT_SIZES = [1000, 5000, 10000, 25000, 50000, 100000];
+
+    async function loadPriceImpact(ticker, marketNames) {
+      const section = document.getElementById('priceImpactSection');
+      if (!section) return;
+
+      try {
+        const books = await Promise.all(
+          marketNames.map(async name => {
+            try {
+              const book = await fetchL2Book(name);
+              return { name, book };
+            } catch { return null; }
+          })
+        );
+
+        const validBooks = books.filter(b => b && b.book && b.book.levels);
+        if (validBooks.length === 0) {
+          section.innerHTML = '<div class="price-impact-loading">Liquidity data unavailable</div>';
+          return;
+        }
+
+        // Find book with tightest spread (best liquidity)
+        let bestBook = null, bestSpread = Infinity, bestName = '';
+        for (const { name, book } of validBooks) {
+          const bids = book.levels[0];
+          const asks = book.levels[1];
+          if (bids?.length && asks?.length) {
+            const spread = (parseFloat(asks[0].px) - parseFloat(bids[0].px)) / parseFloat(asks[0].px);
+            if (spread < bestSpread) {
+              bestSpread = spread;
+              bestBook = book;
+              bestName = name;
+            }
+          }
+        }
+
+        if (!bestBook) {
+          section.innerHTML = '<div class="price-impact-loading">Liquidity data unavailable</div>';
+          return;
+        }
+
+        const deployerKey = bestName.split(':')[0];
+        const deployerLabel = DEPLOYERS[deployerKey]?.name || deployerKey;
+        const spreadPct = (bestSpread * 100).toFixed(3);
+
+        const rows = IMPACT_SIZES.map(size => {
+          const buy = calcPriceImpact(bestBook, size, 'buy');
+          const sell = calcPriceImpact(bestBook, size, 'sell');
+          const sizeLabel = size >= 1000 ? '$' + (size / 1000) + 'K' : '$' + size;
+          return `<div class="price-impact-row">
+            <span class="size-label">${sizeLabel}</span>
+            <span class="impact-value">${fmtImpact(buy)}</span>
+            <span class="impact-value">${fmtImpact(sell)}</span>
+          </div>`;
+        }).join('');
+
+        section.innerHTML = `
+          <div class="price-impact-header">
+            <span class="price-impact-label">Price Impact</span>
+            <span class="price-impact-spread">Spread: <span class="spread-value ${impactClass(parseFloat(spreadPct))}">${spreadPct}%</span>${validBooks.length > 1 ? ` · ${deployerLabel}` : ''}</span>
+          </div>
+          <div class="price-impact-grid">
+            <div class="price-impact-grid-header">
+              <span>Size</span>
+              <span>Buy</span>
+              <span>Sell</span>
+            </div>
+            ${rows}
+          </div>
+        `;
+      } catch (e) {
+        console.warn('Price impact error:', e);
+        section.innerHTML = '<div class="price-impact-loading">Liquidity data unavailable</div>';
+      }
+    }
+
     // Load data
     async function loadData() {
       const keys = Object.keys(DEPLOYERS);
@@ -2434,6 +2676,8 @@
 
     function openBaseAssetModal(base, sortBy = 'volume') {
       const modal = document.getElementById('modal');
+      const oldPI = document.getElementById('priceImpactSection');
+      if (oldPI) oldPI.remove();
       const logo = BASE_ASSET_LOGOS[base];
 
       const tokenData = {};
@@ -2521,6 +2765,8 @@
     // Modal
     function openDeployerModal(deployerKey, sortBy = 'volume') {
       const modal = document.getElementById('modal');
+      const oldPI = document.getElementById('priceImpactSection');
+      if (oldPI) oldPI.remove();
       const deployer = data.deployers[deployerKey];
       if (!deployer) return;
 
@@ -2603,6 +2849,7 @@
     function openTokenModal(ticker) {
       const modal = document.getElementById('modal');
       const pairs = [];
+      const marketNames = [];
       let totalVolume = 0, totalOI = 0;
 
       for (const deployer of Object.values(data.deployers)) {
@@ -2615,6 +2862,7 @@
               volume: market.volume || 0,
               oi: market.oi || 0
             });
+            marketNames.push(market.name);
             totalVolume += market.volume || 0;
             totalOI += market.oi || 0;
           }
@@ -2650,6 +2898,10 @@
       const existingToggle = document.querySelector('.sort-toggle');
       if (existingToggle) existingToggle.remove();
 
+      // Remove old price impact section if present
+      const oldPI = document.getElementById('priceImpactSection');
+      if (oldPI) oldPI.remove();
+
       document.getElementById('modalPairs').innerHTML = pairs.map(p => `
         <div class="modal-table-row">
           <div class="modal-deployer-info">
@@ -2661,11 +2913,24 @@
         </div>
       `).join('');
 
+      // Inject price impact placeholder after the modal table
+      const modalBody = document.querySelector('#modal .modal-body');
+      const piDiv = document.createElement('div');
+      piDiv.id = 'priceImpactSection';
+      piDiv.className = 'price-impact-section';
+      piDiv.innerHTML = '<div class="price-impact-loading">Loading liquidity data...</div>';
+      modalBody.appendChild(piDiv);
+
       modal.classList.add('active');
+
+      // Async load price impact (non-blocking)
+      loadPriceImpact(ticker, marketNames);
     }
 
     function openAssetClassModal(assetClass, sortBy = 'volume') {
       const modal = document.getElementById('modal');
+      const oldPI = document.getElementById('priceImpactSection');
+      if (oldPI) oldPI.remove();
 
       const assetClassLabels = {
         equities: 'Equities',
