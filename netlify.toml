@@ -32,5 +32,5 @@
 # Prevent backend directory from being served
 [[redirects]]
   from = "/backend/*"
-  to = /
+  to = "/"
   status = 404
