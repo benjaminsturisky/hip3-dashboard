@@ -111,6 +111,6 @@ exports.handler = async (event) => {
 
   } catch (e) {
     console.error('History query error:', e);
-    return { statusCode: 500, headers, body: JSON.stringify({ error: e.message }) };
+    return { statusCode: 500, headers, body: JSON.stringify({ error: e.message, cause: e.cause?.message, code: e.code }) };
   }
 };
