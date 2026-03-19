@@ -3,3 +3,6 @@ backend/node_modules/
 backend/data/history.json
 .DS_Store
 .env
+
+# Local Netlify folder
+.netlify

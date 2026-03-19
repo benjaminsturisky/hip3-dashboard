@@ -1431,6 +1431,98 @@
 
     }
 
+    /* Search */
+    .search-bar-wrap {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+    }
+
+    .search-icon {
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .search-bar input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      color: var(--text-primary);
+      font-family: inherit;
+    }
+
+    .search-bar input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .search-clear {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      padding: 2px;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-clear:hover { color: var(--text-secondary); }
+
+    .search-results {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0; right: 0;
+      z-index: 100;
+      border-radius: 12px;
+      overflow: hidden;
+      max-height: 360px;
+      overflow-y: auto;
+    }
+
+    .search-result-row {
+      display: grid;
+      grid-template-columns: 1fr 90px 90px;
+      gap: 12px;
+      padding: 11px 16px;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      align-items: center;
+      transition: background 0.15s;
+    }
+
+    .search-result-row:hover { background: rgba(255,255,255,0.04); }
+    .search-result-row:last-child { border-bottom: none; }
+
+    .search-result-name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .search-result-info .name { font-size: 13px; color: var(--text-primary); display: block; }
+    .search-result-info .ticker { font-size: 11px; color: var(--text-muted); display: block; }
+
+    .search-result-val {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-align: right;
+    }
+
+    .search-no-results {
+      padding: 20px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
     /* Extra small screens */
     @media (max-width: 380px) {
       .container {
@@ -1746,6 +1838,18 @@
 
     <!-- Content -->
     <div id="content" class="hidden">
+      <!-- Search -->
+      <div class="search-bar-wrap">
+        <div class="search-bar glass">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="searchInput" placeholder="Search assets…" autocomplete="off" spellcheck="false">
+          <button id="searchClear" class="search-clear hidden">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div id="searchResults" class="search-results glass hidden"></div>
+      </div>
+
       <!-- Top Stats -->
       <div class="stats-grid">
         <div class="stat-card glass">
@@ -2065,8 +2169,11 @@
       const normalizations = {
         'XAU': 'GOLD', 'XAUUSD': 'GOLD',
         'XAG': 'SILVER', 'XAGUSD': 'SILVER',
-        'WTI': 'OIL', 'CRUDE': 'OIL', 'USOIL': 'OIL',
-        'GOOG': 'GOOGL', 'BRK.B': 'BRK', 'BRK.A': 'BRK'
+        'WTI': 'OIL', 'CRUDE': 'OIL', 'USOIL': 'OIL', 'CL': 'OIL', 'BRENTOIL': 'BRENT',
+        'GOOG': 'GOOGL', 'BRK.B': 'BRK', 'BRK.A': 'BRK',
+        'US500': 'SP500', 'USA500': 'SP500', 'SPX': 'SP500',
+        'US100': 'NDX', 'USA100': 'NDX', 'NAS100': 'NDX', 'NASDAQ': 'NDX',
+        'US30': 'DJI', 'USA30': 'DJI', 'DOW30': 'DJI'
       };
       return normalizations[ticker] || ticker;
     }
@@ -2104,11 +2211,13 @@
       'XLK': 'Tech ETF', 'XLV': 'Healthcare ETF',
       'US500': 'S&P 500', 'USA500': 'S&P 500', 'US100': 'Nasdaq 100',
       'USA100': 'Nasdaq 100', 'US30': 'Dow Jones', 'USA30': 'Dow Jones',
-      'NDX': 'Nasdaq 100', 'SPX': 'S&P 500', 'DJI': 'Dow Jones', 'XYZ100': 'XYZ 100 Index',
+      'SP500': 'S&P 500', 'NDX': 'Nasdaq 100', 'DJI': 'Dow Jones', 'XYZ100': 'XYZ 100 Index',
+      'CL': 'Crude Oil', 'BRENTOIL': 'Brent Crude',
       // Commodities
       'GOLD': 'Gold', 'SILVER': 'Silver',
       'OIL': 'Crude Oil',
-      'BRENT': 'Brent Crude', 'NATGAS': 'Natural Gas', 'NG': 'Natural Gas',
+      'BRENT': 'Brent Crude', 'BRENTOIL': 'Brent Crude', 'CL': 'Crude Oil',
+      'NATGAS': 'Natural Gas', 'NG': 'Natural Gas',
       'COPPER': 'Copper', 'HG': 'Copper', 'PLATINUM': 'Platinum', 'PL': 'Platinum',
       'PALLADIUM': 'Palladium', 'PA': 'Palladium',
       'WHEAT': 'Wheat', 'CORN': 'Corn', 'SOYBEAN': 'Soybean',
@@ -2168,13 +2277,14 @@
         'V', 'MA', 'DIS', 'CMCSA', 'T', 'VZ', 'WMT', 'TGT', 'COST', 'HD', 'MCD',
         'SBUX', 'NKE', 'KO', 'PEP', 'PG', 'JNJ', 'UNH', 'PFE', 'MRNA', 'ABBV',
         'XOM', 'CVX', 'COP', 'SPY', 'QQQ', 'IWM', 'DIA', 'VOO', 'VTI', 'ARKK',
+        'SP500', 'NDX', 'DJI',
         'XLF', 'XLE', 'XLK', 'XLV', 'ARM', 'SMCI', 'DELL', 'AVGO', 'MU', 'QCOM',
         'HOOD', 'SOFI', 'AFRM', 'UPST', 'DKNG', 'ABNB', 'RBLX', 'NET', 'CRWD', 'ZS',
         'BRK', 'US500', 'USA500', 'US100', 'USA100', 'US30', 'USA30', 'NDX', 'SPX', 'DJI',
         'XYZ100'
       ],
       commodities: [
-        'GOLD', 'SILVER', 'OIL', 'BRENT', 'NATGAS', 'NG', 'COPPER', 'HG',
+        'GOLD', 'SILVER', 'OIL', 'BRENT', 'BRENTOIL', 'NATGAS', 'NG', 'CL', 'COPPER', 'HG',
         'PLATINUM', 'PL', 'PALLADIUM', 'PA',
         'WHEAT', 'CORN', 'SOYBEAN', 'COFFEE', 'SUGAR', 'COTTON', 'COCOA'
       ],
@@ -2287,17 +2397,29 @@
           return;
         }
 
-        // Find book with tightest spread (best liquidity)
+        // Prefer Trade[XYZ] book, fall back to tightest spread
         let bestBook = null, bestSpread = Infinity, bestName = '';
-        for (const { name, book } of validBooks) {
-          const bids = book.levels[0];
-          const asks = book.levels[1];
+        const xyzEntry = validBooks.find(({ name }) => name.startsWith('xyz:'));
+        if (xyzEntry) {
+          const bids = xyzEntry.book.levels[0];
+          const asks = xyzEntry.book.levels[1];
           if (bids?.length && asks?.length) {
-            const spread = (parseFloat(asks[0].px) - parseFloat(bids[0].px)) / parseFloat(asks[0].px);
-            if (spread < bestSpread) {
-              bestSpread = spread;
-              bestBook = book;
-              bestName = name;
+            bestBook = xyzEntry.book;
+            bestName = xyzEntry.name;
+            bestSpread = (parseFloat(asks[0].px) - parseFloat(bids[0].px)) / parseFloat(asks[0].px);
+          }
+        }
+        if (!bestBook) {
+          for (const { name, book } of validBooks) {
+            const bids = book.levels[0];
+            const asks = book.levels[1];
+            if (bids?.length && asks?.length) {
+              const spread = (parseFloat(asks[0].px) - parseFloat(bids[0].px)) / parseFloat(asks[0].px);
+              if (spread < bestSpread) {
+                bestSpread = spread;
+                bestBook = book;
+                bestName = name;
+              }
             }
           }
         }
@@ -2779,6 +2901,7 @@
           oi: m.oi || 0,
           color: getAssetColor(normalizeTicker(m.name))
         }))
+        .filter(m => m.volume > 0)
         .sort((a, b) => sortBy === 'volume' ? b.volume - a.volume : b.oi - a.oi);
 
       document.getElementById('modalTitle').innerHTML = `
@@ -2870,6 +2993,7 @@
       }
 
       pairs.sort((a, b) => b.volume - a.volume);
+      const displayPairs = pairs.filter(p => p.volume > 0);
 
       document.getElementById('modalTitle').innerHTML = `
         ${tokenIcon(ticker)}
@@ -2902,7 +3026,7 @@
       const oldPI = document.getElementById('priceImpactSection');
       if (oldPI) oldPI.remove();
 
-      document.getElementById('modalPairs').innerHTML = pairs.map(p => `
+      document.getElementById('modalPairs').innerHTML = displayPairs.map(p => `
         <div class="modal-table-row">
           <div class="modal-deployer-info">
             <img src="${p.deployerImage || ''}" alt="${p.deployerName}" class="modal-deployer-logo" onerror="this.style.display='none'">
@@ -3571,6 +3695,94 @@
       }
     }
 
+    // Search
+    function buildSearchIndex() {
+      const index = {};
+      for (const deployer of Object.values(data.deployers)) {
+        for (const market of (deployer.markets || [])) {
+          if ((market.volume || 0) === 0) continue;
+          const ticker = normalizeTicker(market.name);
+          if (!index[ticker]) {
+            index[ticker] = { ticker, name: getAssetName(ticker), volume: 0, oi: 0 };
+          }
+          index[ticker].volume += market.volume || 0;
+          index[ticker].oi += market.oi || 0;
+        }
+      }
+      return Object.values(index).sort((a, b) => b.volume - a.volume);
+    }
+
+    function initSearch() {
+      const input = document.getElementById('searchInput');
+      const results = document.getElementById('searchResults');
+      const clear = document.getElementById('searchClear');
+      let searchIndex = null;
+
+      input.addEventListener('input', () => {
+        const q = input.value.trim().toLowerCase();
+        clear.classList.toggle('hidden', q.length === 0);
+
+        if (!q) { results.classList.add('hidden'); return; }
+
+        if (!searchIndex) searchIndex = buildSearchIndex();
+
+        const matches = searchIndex.filter(item =>
+          item.ticker.toLowerCase().includes(q) ||
+          item.name.toLowerCase().includes(q)
+        ).slice(0, 12);
+
+        if (matches.length === 0) {
+          results.innerHTML = '<div class="search-no-results">No results</div>';
+        } else {
+          results.innerHTML = matches.map(item => `
+            <div class="search-result-row" data-ticker="${item.ticker}">
+              <div class="search-result-name">
+                ${tokenIcon(item.ticker, 28)}
+                <div class="search-result-info">
+                  <span class="name">${item.name}</span>
+                  <span class="ticker">${item.ticker}</span>
+                </div>
+              </div>
+              <div class="search-result-val">${fmt(item.volume)}</div>
+              <div class="search-result-val">${fmt(item.oi)}</div>
+            </div>
+          `).join('');
+          results.querySelectorAll('.search-result-row').forEach(row => {
+            row.addEventListener('click', () => {
+              openTokenModal(row.dataset.ticker);
+              input.value = '';
+              clear.classList.add('hidden');
+              results.classList.add('hidden');
+            });
+          });
+        }
+        results.classList.remove('hidden');
+      });
+
+      clear.addEventListener('click', () => {
+        input.value = '';
+        clear.classList.add('hidden');
+        results.classList.add('hidden');
+      });
+
+      document.addEventListener('click', e => {
+        if (!e.target.closest('.search-bar-wrap')) {
+          results.classList.add('hidden');
+        }
+      });
+
+      document.addEventListener('keydown', e => {
+        if (e.key === '/' && !e.target.matches('input,textarea')) {
+          e.preventDefault();
+          input.focus();
+        }
+        if (e.key === 'Escape') {
+          results.classList.add('hidden');
+          input.blur();
+        }
+      });
+    }
+
     // Initialize
     async function init() {
       document.getElementById('modalClose').addEventListener('click', closeModal);
@@ -3637,6 +3849,7 @@
         renderOIByToken();
         renderDeployers();
         renderBaseAssets();
+        initSearch();
 
         // Load charts (non-blocking — won't fail if no history yet)
         loadCharts(30);
