@@ -579,6 +579,153 @@
       border-top: 1px solid var(--glass-border);
     }
 
+    /* Heatmap */
+    .heatmap-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .heatmap-toggle {
+      display: flex;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+      padding: 2px;
+    }
+
+    .heatmap-toggle-btn {
+      font-size: 11px;
+      padding: 4px 12px;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+
+    .heatmap-toggle-btn.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .heatmap-container {
+      padding: 8px;
+      min-height: 280px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+      align-content: flex-start;
+    }
+
+    .heatmap-cell {
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+      min-height: 48px;
+      padding: 6px 4px;
+    }
+
+    .heatmap-cell:hover {
+      filter: brightness(1.3);
+      transform: scale(1.03);
+      z-index: 2;
+    }
+
+    .heatmap-cell-ticker {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.95);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+      white-space: nowrap;
+    }
+
+    .heatmap-cell-value {
+      font-size: 9px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.7);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .heatmap-cell.small .heatmap-cell-value { display: none; }
+    .heatmap-cell.tiny .heatmap-cell-ticker { font-size: 8px; }
+    .heatmap-cell.tiny .heatmap-cell-value { display: none; }
+
+    /* Multi-Deployer Assets */
+    .multi-deployer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .multi-deployer-card {
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .multi-deployer-card:hover {
+      border-color: rgba(99, 102, 241, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .multi-deployer-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .multi-deployer-card-name {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text-primary);
+      flex: 1;
+    }
+
+    .multi-deployer-card-count {
+      font-size: 11px;
+      color: var(--accent);
+      background: rgba(99, 102, 241, 0.1);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .multi-deployer-card-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .multi-deployer-deployers {
+      display: flex;
+      gap: 6px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .multi-deployer-deployers img {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 1px solid var(--glass-border);
+    }
+
     /* Modal */
     .modal-overlay {
       position: fixed;
@@ -1190,6 +1337,19 @@
       .deployer-grid {
         grid-template-columns: 1fr;
         gap: 12px;
+      }
+
+      .multi-deployer-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .heatmap-container {
+        min-height: 200px;
+      }
+
+      .heatmap-cell {
+        min-height: 36px;
       }
 
       .deployer-card {
@@ -1878,6 +2038,18 @@
         <div class="asset-class-grid" id="assetClassGrid"></div>
       </div>
 
+      <!-- Volume Heatmap -->
+      <div class="section">
+        <div class="heatmap-header">
+          <h2 class="section-title">Volume Heatmap</h2>
+          <div class="heatmap-toggle" id="heatmapToggle">
+            <button class="heatmap-toggle-btn active" data-metric="volume">Volume</button>
+            <button class="heatmap-toggle-btn" data-metric="oi">OI</button>
+          </div>
+        </div>
+        <div class="heatmap-container glass" id="heatmapContainer"></div>
+      </div>
+
       <!-- Volume & OI by Token -->
       <div class="section">
         <div class="two-columns">
@@ -1908,6 +2080,15 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Cross-Deployer Assets -->
+      <div class="section" id="multiDeployerSection" style="display: none;">
+        <div class="section-header">
+          <h2 class="section-title">Cross-Deployer Assets</h2>
+          <span class="section-subtitle" id="multiDeployerCount" style="font-size: 12px; color: var(--text-muted);"></span>
+        </div>
+        <div class="multi-deployer-grid" id="multiDeployerGrid"></div>
       </div>
 
       <!-- Deployers -->
@@ -2381,8 +2562,15 @@
     }
 
     // L2 Book & Price Impact
+    const bookCache = {};
+    const BOOK_CACHE_TTL = 30000;
+
     async function fetchL2Book(coin) {
-      return fetchAPI('l2Book', { coin });
+      const cached = bookCache[coin];
+      if (cached && Date.now() - cached.ts < BOOK_CACHE_TTL) return cached.book;
+      const book = await fetchAPI('l2Book', { coin });
+      bookCache[coin] = { book, ts: Date.now() };
+      return book;
     }
 
     function calcPriceImpact(book, sizeUSD, side) {
@@ -2737,6 +2925,138 @@
       });
     }
 
+    function renderHeatmap(metric = 'volume') {
+      const container = document.getElementById('heatmapContainer');
+      const tokenData = {};
+
+      for (const deployer of Object.values(data.deployers)) {
+        for (const market of (deployer.markets || [])) {
+          const ticker = normalizeTicker(market.name);
+          if (!tokenData[ticker]) {
+            tokenData[ticker] = { volume: 0, oi: 0, assetClass: classifyAsset(ticker) };
+          }
+          tokenData[ticker].volume += market.volume || 0;
+          tokenData[ticker].oi += market.oi || 0;
+        }
+      }
+
+      const items = Object.entries(tokenData)
+        .filter(([, d]) => d[metric] > 0)
+        .map(([ticker, d]) => ({ ticker, value: d[metric], assetClass: d.assetClass }))
+        .sort((a, b) => b.value - a.value);
+
+      const totalValue = items.reduce((s, i) => s + i.value, 0);
+      if (totalValue === 0) { container.innerHTML = ''; return; }
+
+      const classColors = {
+        equities: { h: 220, s: 70 },
+        commodities: { h: 45, s: 80 },
+        forex: { h: 160, s: 60 },
+        crypto: { h: 270, s: 70 }
+      };
+
+      const maxVal = items[0].value;
+
+      container.innerHTML = items.map(item => {
+        const pct = (item.value / totalValue) * 100;
+        const cc = classColors[item.assetClass] || { h: 0, s: 0 };
+        const intensity = 0.3 + 0.4 * (item.value / maxVal);
+        const lightness = 20 + intensity * 25;
+        const bg = `hsl(${cc.h}, ${cc.s}%, ${lightness}%)`;
+
+        let sizeClass = '';
+        if (pct < 0.5) sizeClass = 'tiny';
+        else if (pct < 2) sizeClass = 'small';
+
+        const basis = Math.max(pct, 1.5);
+
+        return `<div class="heatmap-cell ${sizeClass}"
+                    data-ticker="${item.ticker}"
+                    style="flex: ${basis} 1 0%; background: ${bg}; min-width: 36px;"
+                    title="${getAssetName(item.ticker)}: ${fmt(item.value)}">
+          <span class="heatmap-cell-ticker">${item.ticker}</span>
+          <span class="heatmap-cell-value">${fmt(item.value)}</span>
+        </div>`;
+      }).join('');
+
+      container.querySelectorAll('.heatmap-cell').forEach(cell => {
+        cell.addEventListener('click', () => openTokenModal(cell.dataset.ticker));
+      });
+    }
+
+    function getMultiDeployerAssets() {
+      const tickerDeployers = {};
+      for (const deployer of Object.values(data.deployers)) {
+        for (const market of (deployer.markets || [])) {
+          const ticker = normalizeTicker(market.name);
+          if (!tickerDeployers[ticker]) tickerDeployers[ticker] = [];
+          tickerDeployers[ticker].push({
+            deployerKey: deployer.key,
+            volume: market.volume || 0,
+            oi: market.oi || 0,
+            price: market.price || 0
+          });
+        }
+      }
+      const multi = {};
+      for (const [ticker, entries] of Object.entries(tickerDeployers)) {
+        if (entries.length >= 2) multi[ticker] = entries;
+      }
+      return multi;
+    }
+
+    function renderMultiDeployerAssets() {
+      const multi = getMultiDeployerAssets();
+      const container = document.getElementById('multiDeployerGrid');
+      const countEl = document.getElementById('multiDeployerCount');
+      const section = document.getElementById('multiDeployerSection');
+
+      const sorted = Object.entries(multi)
+        .map(([ticker, entries]) => ({
+          ticker,
+          entries,
+          totalVolume: entries.reduce((s, e) => s + e.volume, 0),
+          totalOI: entries.reduce((s, e) => s + e.oi, 0)
+        }))
+        .filter(item => item.totalVolume > 0)
+        .sort((a, b) => b.totalVolume - a.totalVolume);
+
+      if (sorted.length === 0) { section.style.display = 'none'; return; }
+      section.style.display = '';
+
+      countEl.textContent = `${sorted.length} assets on multiple deployers`;
+
+      container.innerHTML = sorted.map(item => `
+        <div class="multi-deployer-card glass" data-ticker="${item.ticker}">
+          <div class="multi-deployer-card-header">
+            ${tokenIcon(item.ticker)}
+            <span class="multi-deployer-card-name">${getAssetName(item.ticker)}</span>
+            <span class="multi-deployer-card-count">${item.entries.length} deployers</span>
+          </div>
+          <div class="multi-deployer-card-metrics">
+            <div>
+              <div class="deployer-stat-label">Volume 24h</div>
+              <div class="deployer-stat-value">${fmt(item.totalVolume)}</div>
+            </div>
+            <div>
+              <div class="deployer-stat-label">Open Interest</div>
+              <div class="deployer-stat-value">${fmt(item.totalOI)}</div>
+            </div>
+          </div>
+          <div class="multi-deployer-deployers">
+            ${item.entries.map(e => {
+              const dep = DEPLOYERS[e.deployerKey];
+              return `<img src="${dep?.image || ''}" alt="${dep?.name || e.deployerKey}" title="${dep?.name || e.deployerKey}: ${fmt(e.volume)}" onerror="this.style.display='none'">`;
+            }).join('')}
+          </div>
+        </div>
+      `).join('');
+
+      container.querySelectorAll('.multi-deployer-card').forEach(card => {
+        card.addEventListener('click', () => openTokenModal(card.dataset.ticker));
+      });
+    }
+
     function renderDeployers() {
       const container = document.getElementById('deployerGrid');
       const totalVolume = data.totals.volume;
@@ -3069,12 +3389,15 @@
         </div>
       `;
 
-      // Update header for token view
-      document.querySelector('.modal-table-header').innerHTML = `
+      // Update header for token view — add Spread column
+      const tableHeader = document.querySelector('.modal-table-header');
+      tableHeader.innerHTML = `
         <span>Deployer</span>
         <span>Volume</span>
         <span>OI</span>
+        <span>Spread</span>
       `;
+      tableHeader.style.gridTemplateColumns = '1fr 90px 90px 80px';
 
       // Remove sort toggle if present
       const existingToggle = document.querySelector('.sort-toggle');
@@ -3084,16 +3407,55 @@
       const oldPI = document.getElementById('priceImpactSection');
       if (oldPI) oldPI.remove();
 
-      document.getElementById('modalPairs').innerHTML = displayPairs.map(p => `
-        <div class="modal-table-row">
+      document.getElementById('modalPairs').innerHTML = displayPairs.map((p, i) => `
+        <div class="modal-table-row" style="grid-template-columns: 1fr 90px 90px 80px;">
           <div class="modal-deployer-info">
             <img src="${p.deployerImage || ''}" alt="${p.deployerName}" class="modal-deployer-logo" onerror="this.style.display='none'">
             <span class="modal-deployer-name">${p.deployerName}</span>
           </div>
           <span class="value">${fmt(p.volume)}</span>
           <span class="value">${fmt(p.oi)}</span>
+          <span class="value spread-cell" id="spread-${i}" style="color: var(--text-muted); font-size: 11px;">...</span>
         </div>
       `).join('');
+
+      // Async load spreads per deployer
+      const filteredNames = displayPairs.map(p => {
+        for (const deployer of Object.values(data.deployers)) {
+          if (deployer.key === p.deployerKey || deployer.name === p.deployerName) {
+            for (const market of (deployer.markets || [])) {
+              if (normalizeTicker(market.name) === ticker) return market.name;
+            }
+          }
+        }
+        return null;
+      });
+
+      const spreads = [];
+      filteredNames.forEach(async (name, i) => {
+        if (!name) return;
+        try {
+          const book = await fetchL2Book(name);
+          const bids = book?.levels?.[0];
+          const asks = book?.levels?.[1];
+          const cell = document.getElementById(`spread-${i}`);
+          if (!cell) return;
+          if (bids?.length && asks?.length) {
+            const spread = ((parseFloat(asks[0].px) - parseFloat(bids[0].px)) / parseFloat(asks[0].px) * 100);
+            spreads.push({ i, spread });
+            const cls = spread < 0.05 ? 'impact-green' : spread < 0.2 ? 'impact-yellow' : 'impact-red';
+            cell.innerHTML = `<span class="${cls}">${spread.toFixed(3)}%</span>`;
+            // Highlight best spread
+            if (spreads.length === filteredNames.filter(Boolean).length) {
+              const best = spreads.reduce((a, b) => a.spread < b.spread ? a : b);
+              const bestCell = document.getElementById(`spread-${best.i}`);
+              if (bestCell) bestCell.querySelector('span').style.fontWeight = '700';
+            }
+          } else {
+            cell.textContent = '—';
+          }
+        } catch { const cell = document.getElementById(`spread-${i}`); if (cell) cell.textContent = '—'; }
+      });
 
       // Inject price impact placeholder after the modal table
       const modalBody = document.querySelector('#modal .modal-body');
@@ -3903,11 +4265,22 @@
 
         renderStats();
         renderAssetClassBreakdown();
+        renderHeatmap('volume');
         renderVolumeByToken();
         renderOIByToken();
+        renderMultiDeployerAssets();
         renderDeployers();
         renderBaseAssets();
         initSearch();
+
+        // Heatmap toggle
+        document.querySelectorAll('#heatmapToggle .heatmap-toggle-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('#heatmapToggle .heatmap-toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderHeatmap(btn.dataset.metric);
+          });
+        });
 
         // Load charts (non-blocking — won't fail if no history yet)
         loadCharts(30);
