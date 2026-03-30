@@ -21,8 +21,12 @@ function normalizeTicker(name) {
   const normalizations = {
     'XAU': 'GOLD', 'XAUUSD': 'GOLD',
     'XAG': 'SILVER', 'XAGUSD': 'SILVER',
-    'WTI': 'OIL', 'CRUDE': 'OIL', 'USOIL': 'OIL',
-    'GOOG': 'GOOGL', 'BRK.B': 'BRK', 'BRK.A': 'BRK'
+    'WTI': 'OIL', 'CRUDE': 'OIL', 'USOIL': 'OIL', 'CL': 'OIL',
+    'BRENTOIL': 'BRENT',
+    'GOOG': 'GOOGL', 'BRK.B': 'BRK', 'BRK.A': 'BRK',
+    'US500': 'SP500', 'USA500': 'SP500', 'SPX': 'SP500',
+    'US100': 'NDX', 'USA100': 'NDX', 'NAS100': 'NDX', 'NASDAQ': 'NDX',
+    'US30': 'DJI', 'USA30': 'DJI', 'DOW30': 'DJI'
   };
   return normalizations[ticker] || ticker;
 }
