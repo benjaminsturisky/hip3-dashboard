@@ -913,6 +913,75 @@
       font-weight: 500;
     }
 
+    /* Token Charts in Modal */
+    .token-charts-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--glass-border);
+    }
+    .token-charts-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .token-charts-header h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+    }
+    .token-chart-range {
+      display: flex;
+      gap: 4px;
+    }
+    .chart-range-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .chart-range-btn:hover {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-primary);
+    }
+    .chart-range-btn.active {
+      background: rgba(99, 102, 241, 0.2);
+      border-color: rgba(99, 102, 241, 0.4);
+      color: #818cf8;
+    }
+    .token-charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .token-chart-wrap {
+      background: rgba(255,255,255,0.02);
+      border-radius: 10px;
+      padding: 12px;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+    .token-chart-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    .token-chart-canvas-wrap {
+      height: 140px;
+      position: relative;
+    }
+    .token-charts-loading {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
     /* Sort Toggle */
     .sort-toggle {
       display: flex;
@@ -1836,6 +1905,10 @@
       .chart-empty {
         height: 180px;
       }
+
+      .token-charts-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     /* SEO Content - hidden visually, visible to crawlers */
@@ -2170,6 +2243,26 @@
             <span>OI</span>
           </div>
           <div id="modalPairs"></div>
+        </div>
+        <div id="tokenCharts" class="token-charts-section" style="display:none;">
+          <div class="token-charts-header">
+            <h3>Historical Data</h3>
+            <div class="token-chart-range">
+              <button class="chart-range-btn active" data-days="7">7D</button>
+              <button class="chart-range-btn" data-days="30">30D</button>
+              <button class="chart-range-btn" data-days="90">90D</button>
+            </div>
+          </div>
+          <div class="token-charts-grid">
+            <div class="token-chart-wrap">
+              <div class="token-chart-label">Volume 24h</div>
+              <div class="token-chart-canvas-wrap"><canvas id="tokenVolumeChart"></canvas></div>
+            </div>
+            <div class="token-chart-wrap">
+              <div class="token-chart-label">Open Interest</div>
+              <div class="token-chart-canvas-wrap"><canvas id="tokenOIChart"></canvas></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -3016,6 +3109,7 @@
 
     function openBaseAssetModal(base, sortBy = 'volume') {
       const modal = document.getElementById('modal');
+      document.getElementById('tokenCharts').style.display = 'none';
       const logo = BASE_ASSET_LOGOS[base];
 
       const tokenData = {};
@@ -3103,6 +3197,7 @@
     // Modal
     function openDeployerModal(deployerKey, sortBy = 'volume') {
       const modal = document.getElementById('modal');
+      document.getElementById('tokenCharts').style.display = 'none';
       const deployer = data.deployers[deployerKey];
       if (!deployer) return;
 
@@ -3290,10 +3385,18 @@
           }
         } catch { const cell = document.getElementById(`spread-${i}`); if (cell) cell.textContent = '—'; }
       });
+
+      // Load historical charts
+      const chartsSection = document.getElementById('tokenCharts');
+      chartsSection.style.display = 'none';
+      chartsSection.querySelectorAll('.chart-range-btn').forEach(b => b.classList.remove('active'));
+      chartsSection.querySelector('.chart-range-btn[data-days="7"]').classList.add('active');
+      loadTokenCharts(ticker, 7);
     }
 
     function openAssetClassModal(assetClass, sortBy = 'volume') {
       const modal = document.getElementById('modal');
+      document.getElementById('tokenCharts').style.display = 'none';
 
       const assetClassLabels = {
         equities: 'Equities',
@@ -3931,6 +4034,100 @@
       } catch (e) {
         console.warn('Charts unavailable:', e.message);
         document.getElementById('chartsSection').style.display = 'none';
+      }
+    }
+
+    // Token modal charts
+    let tokenVolChart = null;
+    let tokenOIChart = null;
+    let currentTokenTicker = null;
+
+    async function loadTokenCharts(ticker, days = 7) {
+      if (typeof Chart === 'undefined') return;
+
+      const section = document.getElementById('tokenCharts');
+      currentTokenTicker = ticker;
+
+      try {
+        const res = await fetch(`/.netlify/functions/history?type=token&ticker=${encodeURIComponent(ticker)}&days=${days}`);
+        if (!res.ok) throw new Error('API error');
+        const historyData = await res.json();
+
+        if (!historyData.length) {
+          section.style.display = 'none';
+          return;
+        }
+
+        section.style.display = '';
+
+        const labels = historyData.map(d => {
+          const dt = new Date(d.timestamp);
+          return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
+            ' ' + dt.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+        });
+
+        const tokenChartOpts = {
+          ...chartDefaults,
+          scales: {
+            x: { ...chartDefaults.scales.x, ticks: { ...chartDefaults.scales.x.ticks, maxTicksLimit: 5 } },
+            y: { ...chartDefaults.scales.y }
+          }
+        };
+
+        // Volume
+        const volCanvas = document.getElementById('tokenVolumeChart');
+        const volCtx = volCanvas.getContext('2d');
+        if (tokenVolChart) tokenVolChart.destroy();
+        tokenVolChart = new Chart(volCtx, {
+          type: 'line',
+          data: {
+            labels,
+            datasets: [{
+              data: historyData.map(d => d.volume),
+              borderColor: 'rgba(99, 102, 241, 1)',
+              backgroundColor: createGradient(volCtx, 'rgba(99, 102, 241, 1)'),
+              borderWidth: 2, fill: true, tension: 0.3,
+              pointRadius: historyData.length > 20 ? 0 : 3,
+              pointHoverRadius: 4,
+              pointBackgroundColor: 'rgba(99, 102, 241, 1)'
+            }]
+          },
+          options: tokenChartOpts
+        });
+
+        // OI
+        const oiCanvas = document.getElementById('tokenOIChart');
+        const oiCtx = oiCanvas.getContext('2d');
+        if (tokenOIChart) tokenOIChart.destroy();
+        tokenOIChart = new Chart(oiCtx, {
+          type: 'line',
+          data: {
+            labels,
+            datasets: [{
+              data: historyData.map(d => d.oi),
+              borderColor: 'rgba(34, 197, 94, 1)',
+              backgroundColor: createGradient(oiCtx, 'rgba(34, 197, 94, 1)'),
+              borderWidth: 2, fill: true, tension: 0.3,
+              pointRadius: historyData.length > 20 ? 0 : 3,
+              pointHoverRadius: 4,
+              pointBackgroundColor: 'rgba(34, 197, 94, 1)'
+            }]
+          },
+          options: tokenChartOpts
+        });
+
+        // Range button handlers
+        section.querySelectorAll('.chart-range-btn').forEach(btn => {
+          btn.onclick = () => {
+            section.querySelectorAll('.chart-range-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            loadTokenCharts(ticker, parseInt(btn.dataset.days));
+          };
+        });
+
+      } catch (e) {
+        console.warn('Token charts unavailable:', e.message);
+        section.style.display = 'none';
       }
     }
 
