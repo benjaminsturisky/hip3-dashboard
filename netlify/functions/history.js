@@ -70,16 +70,32 @@ exports.handler = async (event) => {
       const ticker = params.ticker;
       if (!ticker) return { statusCode: 400, body: JSON.stringify({ error: 'Missing ticker param' }) };
 
+      // Reverse normalization map: find all raw tickers that map to this normalized ticker
+      const reverseMap = {
+        'GOLD': ['GOLD', 'XAU', 'XAUUSD'],
+        'SILVER': ['SILVER', 'XAG', 'XAGUSD'],
+        'OIL': ['OIL', 'WTI', 'CRUDE', 'USOIL', 'CL'],
+        'BRENT': ['BRENT', 'BRENTOIL'],
+        'GOOGL': ['GOOGL', 'GOOG'],
+        'BRK': ['BRK', 'BRK.B', 'BRK.A'],
+        'SP500': ['SP500', 'US500', 'USA500', 'SPX'],
+        'NDX': ['NDX', 'US100', 'USA100', 'NAS100', 'NASDAQ'],
+        'DJI': ['DJI', 'US30', 'USA30', 'DOW30']
+      };
+
+      const tickerUpper = ticker.toUpperCase();
+      const variants = reverseMap[tickerUpper] || [tickerUpper];
+
       const { data, error } = await supabase
         .from('token_snapshots')
         .select('timestamp, deployer, volume, open_interest, price')
-        .eq('ticker', ticker.toUpperCase())
+        .in('ticker', variants)
         .gte('timestamp', since)
         .order('timestamp', { ascending: true });
 
       if (error) throw error;
 
-      // Aggregate across deployers per timestamp
+      // Aggregate across deployers AND ticker variants per timestamp
       const grouped = {};
       for (const row of data) {
         const ts = row.timestamp;
