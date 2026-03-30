@@ -95,6 +95,34 @@ exports.handler = async (event) => {
       };
     }
 
+    // Base asset history (aggregate all tokens with a given base_asset per timestamp)
+    if (type === 'base') {
+      const base = params.base;
+      if (!base) return { statusCode: 400, body: JSON.stringify({ error: 'Missing base param' }) };
+
+      const { data, error } = await supabase
+        .from('token_snapshots')
+        .select('timestamp, volume, open_interest, base_asset')
+        .eq('base_asset', base.toUpperCase())
+        .gte('timestamp', since)
+        .order('timestamp', { ascending: true });
+
+      if (error) throw error;
+
+      const grouped = {};
+      for (const row of data) {
+        const ts = row.timestamp;
+        if (!grouped[ts]) grouped[ts] = { timestamp: ts, volume: 0, oi: 0 };
+        grouped[ts].volume += row.volume;
+        grouped[ts].oi += row.open_interest;
+      }
+
+      return {
+        statusCode: 200, headers,
+        body: JSON.stringify(Object.values(grouped))
+      };
+    }
+
     // Deployer breakdown over time (all deployers, for stacked chart)
     if (type === 'deployers') {
       const { data, error } = await supabase

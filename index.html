@@ -2887,7 +2887,6 @@
 
     function openBaseAssetModal(base, sortBy = 'volume') {
       const modal = document.getElementById('modal');
-      document.getElementById('tokenCharts').style.display = 'none';
       const logo = BASE_ASSET_LOGOS[base];
 
       const tokenData = {};
@@ -2922,7 +2921,7 @@
           <div class="modal-stat-value">${fmt(totalVolume)}</div>
         </div>
         <div class="modal-stat">
-          <div class="modal-stat-label">Total OI</div>
+          <div class="modal-stat-label">Total Open Interest</div>
           <div class="modal-stat-value">${fmt(totalOI)}</div>
         </div>
       `;
@@ -2970,12 +2969,18 @@
       });
 
       modal.classList.add('active');
+
+      // Load historical charts for base asset
+      const bChartsSection = document.getElementById('tokenCharts');
+      bChartsSection.style.display = 'none';
+      bChartsSection.querySelectorAll('.chart-range-btn').forEach(b => b.classList.remove('active'));
+      bChartsSection.querySelector('.chart-range-btn[data-days="7"]').classList.add('active');
+      loadModalCharts({ type: 'base', base }, 7);
     }
 
     // Modal
     function openDeployerModal(deployerKey, sortBy = 'volume') {
       const modal = document.getElementById('modal');
-      document.getElementById('tokenCharts').style.display = 'none';
       const deployer = data.deployers[deployerKey];
       if (!deployer) return;
 
@@ -3002,7 +3007,7 @@
           <div class="modal-stat-value">${fmt(deployer.volume)}</div>
         </div>
         <div class="modal-stat">
-          <div class="modal-stat-label">Total OI</div>
+          <div class="modal-stat-label">Total Open Interest</div>
           <div class="modal-stat-value">${fmt(deployer.oi)}</div>
         </div>
       `;
@@ -3054,6 +3059,13 @@
       });
 
       modal.classList.add('active');
+
+      // Load historical charts for deployer
+      const dChartsSection = document.getElementById('tokenCharts');
+      dChartsSection.style.display = 'none';
+      dChartsSection.querySelectorAll('.chart-range-btn').forEach(b => b.classList.remove('active'));
+      dChartsSection.querySelector('.chart-range-btn[data-days="7"]').classList.add('active');
+      loadModalCharts({ type: 'deployer', deployer: deployerKey }, 7);
     }
 
     function openTokenModal(ticker) {
@@ -3093,7 +3105,7 @@
           <div class="modal-stat-value">${fmt(totalVolume)}</div>
         </div>
         <div class="modal-stat">
-          <div class="modal-stat-label">Total OI</div>
+          <div class="modal-stat-label">Total Open Interest</div>
           <div class="modal-stat-value">${fmt(totalOI)}</div>
         </div>
       `;
@@ -3103,10 +3115,10 @@
       tableHeader.innerHTML = `
         <span>Deployer</span>
         <span>Volume</span>
-        <span>OI</span>
+        <span>Open Interest</span>
         <span>$10K Spread</span>
       `;
-      tableHeader.style.gridTemplateColumns = '1fr 90px 90px 90px';
+      tableHeader.style.gridTemplateColumns = '1fr 100px 110px 100px';
 
       // Remove sort toggle if present
       const existingToggle = document.querySelector('.sort-toggle');
@@ -3115,7 +3127,7 @@
       // Remove old price impact section if present
 
       document.getElementById('modalPairs').innerHTML = displayPairs.map((p, i) => `
-        <div class="modal-table-row" style="grid-template-columns: 1fr 90px 90px 90px;">
+        <div class="modal-table-row" style="grid-template-columns: 1fr 100px 110px 100px;">
           <div class="modal-deployer-info">
             <img src="${p.deployerImage || ''}" alt="${p.deployerName}" class="modal-deployer-logo" onerror="this.style.display='none'">
             <span class="modal-deployer-name">${p.deployerName}</span>
@@ -3169,7 +3181,7 @@
       chartsSection.style.display = 'none';
       chartsSection.querySelectorAll('.chart-range-btn').forEach(b => b.classList.remove('active'));
       chartsSection.querySelector('.chart-range-btn[data-days="7"]').classList.add('active');
-      loadTokenCharts(ticker, 7);
+      loadModalCharts({ type: 'token', ticker }, 7);
     }
 
     function openAssetClassModal(assetClass, sortBy = 'volume') {
@@ -3226,7 +3238,7 @@
           <div class="modal-stat-value">${fmt(totalVolume)}</div>
         </div>
         <div class="modal-stat">
-          <div class="modal-stat-label">Total OI</div>
+          <div class="modal-stat-label">Total Open Interest</div>
           <div class="modal-stat-value">${fmt(totalOI)}</div>
         </div>
       `;
@@ -3816,18 +3828,31 @@
     }
 
     // Token modal charts
-    let tokenVolChart = null;
-    let tokenOIChart = null;
-    let currentTokenTicker = null;
+    let modalVolChart = null;
+    let modalOIChart = null;
+    let modalChartQuery = null;
 
-    async function loadTokenCharts(ticker, days = 7) {
+    async function loadModalCharts(queryParams, days = 7) {
       if (typeof Chart === 'undefined') return;
 
       const section = document.getElementById('tokenCharts');
-      currentTokenTicker = ticker;
+      modalChartQuery = queryParams;
 
       try {
-        const res = await fetch(`/.netlify/functions/history?type=token&ticker=${encodeURIComponent(ticker)}&days=${days}`);
+        // Build URL from query params
+        let url;
+        if (queryParams.type === 'token') {
+          url = `/.netlify/functions/history?type=token&ticker=${encodeURIComponent(queryParams.ticker)}&days=${days}`;
+        } else if (queryParams.type === 'deployer') {
+          url = `/.netlify/functions/history?type=deployer&deployer=${encodeURIComponent(queryParams.deployer)}&days=${days}`;
+        } else if (queryParams.type === 'base') {
+          url = `/.netlify/functions/history?type=base&base=${encodeURIComponent(queryParams.base)}&days=${days}`;
+        } else {
+          section.style.display = 'none';
+          return;
+        }
+
+        const res = await fetch(url);
         if (!res.ok) throw new Error('API error');
         const historyData = await res.json();
 
@@ -3838,13 +3863,20 @@
 
         section.style.display = '';
 
-        const labels = historyData.map(d => {
+        // Normalize field names (deployer endpoint uses volume_24h/open_interest)
+        const normalized = historyData.map(d => ({
+          timestamp: d.timestamp,
+          volume: d.volume ?? d.volume_24h ?? 0,
+          oi: d.oi ?? d.open_interest ?? 0
+        }));
+
+        const labels = normalized.map(d => {
           const dt = new Date(d.timestamp);
           return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
             ' ' + dt.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
         });
 
-        const tokenChartOpts = {
+        const modalChartOpts = {
           ...chartDefaults,
           scales: {
             x: { ...chartDefaults.scales.x, ticks: { ...chartDefaults.scales.x.ticks, maxTicksLimit: 5 } },
@@ -3855,43 +3887,43 @@
         // Volume
         const volCanvas = document.getElementById('tokenVolumeChart');
         const volCtx = volCanvas.getContext('2d');
-        if (tokenVolChart) tokenVolChart.destroy();
-        tokenVolChart = new Chart(volCtx, {
+        if (modalVolChart) modalVolChart.destroy();
+        modalVolChart = new Chart(volCtx, {
           type: 'line',
           data: {
             labels,
             datasets: [{
-              data: historyData.map(d => d.volume),
+              data: normalized.map(d => d.volume),
               borderColor: 'rgba(99, 102, 241, 1)',
               backgroundColor: createGradient(volCtx, 'rgba(99, 102, 241, 1)'),
               borderWidth: 2, fill: true, tension: 0.3,
-              pointRadius: historyData.length > 20 ? 0 : 3,
+              pointRadius: normalized.length > 20 ? 0 : 3,
               pointHoverRadius: 4,
               pointBackgroundColor: 'rgba(99, 102, 241, 1)'
             }]
           },
-          options: tokenChartOpts
+          options: modalChartOpts
         });
 
         // OI
         const oiCanvas = document.getElementById('tokenOIChart');
         const oiCtx = oiCanvas.getContext('2d');
-        if (tokenOIChart) tokenOIChart.destroy();
-        tokenOIChart = new Chart(oiCtx, {
+        if (modalOIChart) modalOIChart.destroy();
+        modalOIChart = new Chart(oiCtx, {
           type: 'line',
           data: {
             labels,
             datasets: [{
-              data: historyData.map(d => d.oi),
+              data: normalized.map(d => d.oi),
               borderColor: 'rgba(34, 197, 94, 1)',
               backgroundColor: createGradient(oiCtx, 'rgba(34, 197, 94, 1)'),
               borderWidth: 2, fill: true, tension: 0.3,
-              pointRadius: historyData.length > 20 ? 0 : 3,
+              pointRadius: normalized.length > 20 ? 0 : 3,
               pointHoverRadius: 4,
               pointBackgroundColor: 'rgba(34, 197, 94, 1)'
             }]
           },
-          options: tokenChartOpts
+          options: modalChartOpts
         });
 
         // Range button handlers
@@ -3899,12 +3931,12 @@
           btn.onclick = () => {
             section.querySelectorAll('.chart-range-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            loadTokenCharts(ticker, parseInt(btn.dataset.days));
+            loadModalCharts(queryParams, parseInt(btn.dataset.days));
           };
         });
 
       } catch (e) {
-        console.warn('Token charts unavailable:', e.message);
+        console.warn('Modal charts unavailable:', e.message);
         section.style.display = 'none';
       }
     }
