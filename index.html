@@ -579,97 +579,6 @@
       border-top: 1px solid var(--glass-border);
     }
 
-    /* Heatmap */
-    .heatmap-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-
-    .heatmap-toggle {
-      display: flex;
-      gap: 4px;
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 8px;
-      padding: 2px;
-    }
-
-    .heatmap-toggle-btn {
-      font-size: 11px;
-      padding: 4px 12px;
-      border: none;
-      border-radius: 6px;
-      background: transparent;
-      color: var(--text-muted);
-      cursor: pointer;
-      font-weight: 500;
-      transition: all 0.15s;
-      font-family: inherit;
-    }
-
-    .heatmap-toggle-btn.active {
-      background: var(--accent);
-      color: #fff;
-    }
-
-    .heatmap-container {
-      position: relative;
-      height: 380px;
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    .heatmap-cell {
-      position: absolute;
-      border-radius: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 3px;
-      cursor: pointer;
-      transition: filter 0.15s;
-      overflow: hidden;
-      box-sizing: border-box;
-      padding: 4px;
-    }
-
-    .heatmap-cell::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border: 1.5px solid rgba(0,0,0,0.25);
-      pointer-events: none;
-    }
-
-    .heatmap-cell:hover {
-      filter: brightness(1.25);
-      z-index: 10;
-    }
-
-    .heatmap-cell-ticker {
-      font-size: 13px;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.95);
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-      white-space: nowrap;
-      line-height: 1;
-    }
-
-    .heatmap-cell-value {
-      font-size: 11px;
-      font-weight: 500;
-      color: rgba(255, 255, 255, 0.75);
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-      line-height: 1;
-    }
-
-    .heatmap-cell.small .heatmap-cell-ticker { font-size: 10px; }
-    .heatmap-cell.small .heatmap-cell-value { display: none; }
-    .heatmap-cell.tiny .heatmap-cell-ticker { font-size: 8px; }
-    .heatmap-cell.tiny .heatmap-cell-value { display: none; }
-
     /* Multi-Deployer Assets */
     .multi-deployer-grid {
       display: grid;
@@ -1330,10 +1239,6 @@
       .multi-deployer-grid {
         grid-template-columns: 1fr;
         gap: 12px;
-      }
-
-      .heatmap-container {
-        height: 280px;
       }
 
       .deployer-card {
@@ -2009,17 +1914,6 @@
         <div class="asset-class-grid" id="assetClassGrid"></div>
       </div>
 
-      <!-- Volume Heatmap -->
-      <div class="section">
-        <div class="heatmap-header">
-          <h2 class="section-title">Volume Heatmap</h2>
-          <div class="heatmap-toggle" id="heatmapToggle">
-            <button class="heatmap-toggle-btn active" data-metric="volume">Volume</button>
-            <button class="heatmap-toggle-btn" data-metric="oi">OI</button>
-          </div>
-        </div>
-        <div class="heatmap-container glass" id="heatmapContainer"></div>
-      </div>
 
       <!-- Volume & OI by Token -->
       <div class="section">
@@ -2800,122 +2694,6 @@
       });
     }
 
-    function treemapLayout(items, totalValue, x, y, w, h) {
-      // Row-based squarified treemap
-      if (!items.length) return [];
-      if (items.length === 1) return [{ ...items[0], x, y, w, h }];
-
-      const rects = [];
-      let remaining = items.slice();
-      let curX = x, curY = y, curW = w, curH = h;
-
-      while (remaining.length > 0) {
-        const remValue = remaining.reduce((s, i) => s + i.value, 0);
-        const isHoriz = curW >= curH;
-        const shortSide = isHoriz ? curH : curW;
-
-        // Find optimal row: keep adding items while worst aspect ratio improves
-        let rowItems = [], rowValue = 0, prevWorst = Infinity;
-        for (let i = 0; i < remaining.length; i++) {
-          const test = [...rowItems, remaining[i]];
-          const testVal = rowValue + remaining[i].value;
-          const rowLen = (testVal / remValue) * (isHoriz ? curW : curH);
-          let worst = 0;
-          for (const item of test) {
-            const itemLen = (item.value / testVal) * rowLen;
-            const ratio = Math.max(shortSide / itemLen, itemLen / shortSide);
-            if (ratio > worst) worst = ratio;
-          }
-          if (rowItems.length > 0 && worst > prevWorst) break;
-          rowItems = test;
-          rowValue = testVal;
-          prevWorst = worst;
-        }
-
-        const rowFrac = rowValue / remValue;
-        const rowLen = isHoriz ? curW * rowFrac : curH * rowFrac;
-        let pos = isHoriz ? curY : curX;
-
-        for (const item of rowItems) {
-          const itemLen = (item.value / rowValue) * shortSide;
-          rects.push({
-            ...item,
-            x: isHoriz ? curX : pos,
-            y: isHoriz ? pos : curY,
-            w: isHoriz ? rowLen : itemLen,
-            h: isHoriz ? itemLen : rowLen
-          });
-          pos += itemLen;
-        }
-
-        if (isHoriz) { curX += rowLen; curW -= rowLen; }
-        else { curY += rowLen; curH -= rowLen; }
-        remaining = remaining.slice(rowItems.length);
-      }
-      return rects;
-    }
-
-    function renderHeatmap(metric = 'volume') {
-      const container = document.getElementById('heatmapContainer');
-      const tokenData = {};
-
-      for (const deployer of Object.values(data.deployers)) {
-        for (const market of (deployer.markets || [])) {
-          const ticker = normalizeTicker(market.name);
-          if (!tokenData[ticker]) {
-            tokenData[ticker] = { volume: 0, oi: 0, assetClass: classifyAsset(ticker) };
-          }
-          tokenData[ticker].volume += market.volume || 0;
-          tokenData[ticker].oi += market.oi || 0;
-        }
-      }
-
-      const items = Object.entries(tokenData)
-        .filter(([, d]) => d[metric] > 0)
-        .map(([ticker, d]) => ({ ticker, value: d[metric], assetClass: d.assetClass }))
-        .sort((a, b) => b.value - a.value);
-
-      const totalValue = items.reduce((s, i) => s + i.value, 0);
-      if (totalValue === 0) { container.innerHTML = ''; return; }
-
-      const W = container.clientWidth || container.offsetWidth || 900;
-      const H = 380;
-
-      const classColors = {
-        equities: { h: 217, s: 65 },
-        commodities: { h: 42, s: 80 },
-        forex: { h: 158, s: 55 },
-        crypto: { h: 268, s: 65 }
-      };
-      const maxVal = items[0].value;
-
-      const rects = treemapLayout(items, totalValue, 0, 0, W, H);
-
-      container.innerHTML = rects.map(rect => {
-        const pct = (rect.value / totalValue) * 100;
-        const cc = classColors[rect.assetClass] || { h: 0, s: 30 };
-        const intensity = 0.25 + 0.5 * (rect.value / maxVal);
-        const lightness = 18 + intensity * 28;
-        const bg = `hsl(${cc.h}, ${cc.s}%, ${lightness}%)`;
-
-        const cellW = rect.w, cellH = rect.h;
-        let sizeClass = '';
-        if (cellW < 55 || cellH < 42) sizeClass = 'tiny';
-        else if (cellW < 90 || cellH < 60) sizeClass = 'small';
-
-        return `<div class="heatmap-cell ${sizeClass}"
-                    data-ticker="${rect.ticker}"
-                    style="left:${rect.x}px;top:${rect.y}px;width:${rect.w}px;height:${rect.h}px;background:${bg};"
-                    title="${getAssetName(rect.ticker)}: ${fmt(rect.value)}">
-          <span class="heatmap-cell-ticker">${rect.ticker}</span>
-          <span class="heatmap-cell-value">${fmt(rect.value)}</span>
-        </div>`;
-      }).join('');
-
-      container.querySelectorAll('.heatmap-cell').forEach(cell => {
-        cell.addEventListener('click', () => openTokenModal(cell.dataset.ticker));
-      });
-    }
 
     function getMultiDeployerAssets() {
       const tickerDeployers = {};
@@ -4281,22 +4059,12 @@
 
         renderStats();
         renderAssetClassBreakdown();
-        renderHeatmap('volume');
         renderVolumeByToken();
         renderOIByToken();
         renderMultiDeployerAssets();
         renderDeployers();
         renderBaseAssets();
         initSearch();
-
-        // Heatmap toggle
-        document.querySelectorAll('#heatmapToggle .heatmap-toggle-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            document.querySelectorAll('#heatmapToggle .heatmap-toggle-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderHeatmap(btn.dataset.metric);
-          });
-        });
 
         // Load charts (non-blocking — won't fail if no history yet)
         loadCharts(30);
