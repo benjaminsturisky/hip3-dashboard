@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HIP-3 Dashboard | Hyperliquid TradFi Analytics - Stocks, Commodities & Forex On-Chain</title>
-  <meta name="description" content="Track HIP-3 markets on Hyperliquid in real time. Compare deployers like Trade[XYZ], hyENA, Dreamcash, Kinetiq, Felix & Ventuals. Volume, open interest, and analytics for on-chain stocks, commodities, and forex trading.">
-  <meta name="keywords" content="HIP-3, Hyperliquid, TradFi, traditional finance, on-chain stocks, DeFi, perpetual futures, crypto trading, Trade XYZ, hyENA, Dreamcash, Kinetiq Markets, Felix, Ventuals, USDC, USDE, USDT0, USDH, real-time analytics, volume tracker, open interest, HIP3, deployer dashboard, on-chain equities, tokenized stocks, decentralized exchange, perps">
+  <meta name="description" content="Track HIP-3 markets on Hyperliquid in real time. Compare deployers like Trade[XYZ], Paragon, Markets by Kinetiq & hyENA. Volume, open interest, and analytics for on-chain stocks, commodities, and forex trading.">
+  <meta name="keywords" content="HIP-3, Hyperliquid, TradFi, traditional finance, on-chain stocks, DeFi, perpetual futures, crypto trading, Trade XYZ, hyENA, Paragon, Markets by Kinetiq, Dreamcash, USDC, USDE, USDT0, USDH, real-time analytics, volume tracker, open interest, HIP3, deployer dashboard, on-chain equities, tokenized stocks, decentralized exchange, perps">
   <meta name="author" content="Benjamin Sturisky">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <link rel="canonical" href="https://hypetrad.com/">
@@ -80,7 +80,7 @@
         "name": "What is HIP-3 on Hyperliquid?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "HIP-3 is Hyperliquid's framework for deploying traditional finance (TradFi) assets on-chain as perpetual futures. It enables trading of stocks, commodities, forex, and crypto through third-party deployers like Trade[XYZ], hyENA, Dreamcash, Kinetiq Markets, Felix, and Ventuals."
+          "text": "HIP-3 is Hyperliquid's framework for deploying traditional finance (TradFi) assets on-chain as perpetual futures. It enables trading of stocks, commodities, forex, and crypto through third-party deployers like Trade[XYZ], Paragon, Markets by Kinetiq, and hyENA."
         }
       },
       {
@@ -88,7 +88,7 @@
         "name": "What deployers are available on HIP-3?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Current HIP-3 deployers include Trade[XYZ] (USDC), hyENA (USDE), Dreamcash (USDT0), Kinetiq Markets (USDH), Felix (USDH), and Ventuals (USDH). Each deployer offers different markets and uses different base collateral assets."
+          "text": "Actively trading HIP-3 deployers include Trade[XYZ] (USDC), Paragon (USDC), Markets by Kinetiq (USDC), and hyENA (USDE). Each deployer offers different markets and uses different base collateral assets. Deployers reporting no 24-hour volume are hidden automatically."
         }
       },
       {
@@ -635,12 +635,31 @@
       border-top: 1px solid var(--glass-border);
     }
 
-    .multi-deployer-deployers img {
+    .multi-deployer-deployers img,
+    .multi-deployer-deployers .deployer-logo-mini {
       width: 22px;
       height: 22px;
       border-radius: 6px;
       object-fit: cover;
       border: 1px solid var(--glass-border);
+    }
+
+    /* Shown in place of a deployer logo when the image is missing */
+    .deployer-logo-fallback {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+
+    .multi-deployer-deployers .deployer-logo-fallback {
+      font-size: 9px;
     }
 
     /* Modal */
@@ -2003,14 +2022,12 @@
     <p>HIP-3 is Hyperliquid's framework that enables third-party deployers to bring traditional finance (TradFi) assets on-chain as perpetual futures contracts. This dashboard provides real-time analytics for all HIP-3 markets, including volume, open interest, and deployer performance data.</p>
 
     <h3>HIP-3 Deployers</h3>
-    <p>Six deployers currently operate on HIP-3, each offering unique markets and using different collateral base assets:</p>
+    <p>Each deployer offers unique markets and settles in its own collateral asset. Deployers reporting no 24-hour volume are hidden from the dashboard and reappear automatically once they trade again:</p>
     <ul>
-      <li><strong>Trade[XYZ]</strong> — The largest HIP-3 deployer by volume, using USDC as collateral. Offers 40+ markets including major equities, commodities, and indices.</li>
-      <li><strong>hyENA</strong> — Uses USDE (Ethena USDe) as collateral. Provides access to stocks, metals, and crypto perpetuals.</li>
-      <li><strong>Dreamcash</strong> — Operates with USDT0 collateral. Focuses on high-demand equity and commodity markets.</li>
-      <li><strong>Kinetiq Markets</strong> — Uses USDH collateral. Covers equities, commodities, forex, and crypto.</li>
-      <li><strong>Felix</strong> — Also USDH-based. Offers a curated selection of TradFi and crypto markets.</li>
-      <li><strong>Ventuals</strong> — USDH collateral. Provides a diverse range of perpetual futures markets.</li>
+      <li><strong>Trade[XYZ]</strong> — The largest HIP-3 deployer by volume, using USDC as collateral. Offers 100+ markets including major equities, commodities, indices, and forex.</li>
+      <li><strong>Paragon</strong> — USDC collateral. Focuses on semiconductor, AI infrastructure, and data-center equities alongside crypto dominance indices.</li>
+      <li><strong>Markets by Kinetiq</strong> — USDC collateral. Covers US indices, megacap equities, metals, energy, and rates.</li>
+      <li><strong>hyENA</strong> — Uses USDE (Ethena USDe) as collateral. Provides access to crypto perpetuals and metals.</li>
     </ul>
 
     <h3>Available Asset Classes</h3>
@@ -2167,10 +2184,15 @@
       'xyz': { name: 'Trade[XYZ]', image: 'images/xyz.png' },
       'hyna': { name: 'hyENA', image: 'images/hyena.png' },
       'cash': { name: 'Dreamcash', image: 'images/dreamcash.png' },
-      'km': { name: 'Kinetiq Markets', image: 'images/kinetiq.png' },
+      'km': { name: 'Markets by Kinetiq (Legacy)', image: 'images/kinetiq.png' },
+      'mkts': { name: 'Markets by Kinetiq', image: 'images/kinetiq.png' },
+      'para': { name: 'Paragon', image: 'images/paragon.png' },
       'flx': { name: 'Felix', image: 'images/felix.png' },
       'vntl': { name: 'Ventuals', image: 'images/ventuals.png' }
     };
+
+    // Deployers reporting no 24h volume are hidden. Set to false to show them all.
+    const HIDE_ZERO_VOLUME_DEPLOYERS = true;
 
     let data = {
       deployers: {},
@@ -2280,6 +2302,26 @@
       'EUR': `${TV}/country/EU--big.svg`,
       'JPY': `${TV}/country/JP--big.svg`,
       'GBP': `${TV}/country/GB--big.svg`,
+      // Paragon (para) + Markets by Kinetiq (mkts).
+      // Any slug that 404s falls back to a colored initials badge automatically.
+      'RDDT': `${TV}/reddit--big.svg`,
+      'LRCX': `${TV}/lam-research--big.svg`,
+      'GLW': `${TV}/corning--big.svg`,
+      'TER': `${TV}/teradyne--big.svg`,
+      'CIEN': `${TV}/ciena--big.svg`,
+      'MELI': `${TV}/mercadolibre--big.svg`,
+      'COHR': `${TV}/coherent--big.svg`,
+      'VST': `${TV}/vistra--big.svg`,
+      'STX': `${TV}/seagate-technology--big.svg`,
+      'SMCI': `${TV}/super-micro-computer--big.svg`,
+      'CRDO': `${TV}/credo-technology--big.svg`,
+      'IREN': `${TV}/iren--big.svg`,
+      'AAOI': `${TV}/applied-optoelectronics--big.svg`,
+      'NAVER': `${TV}/naver--big.svg`,
+      'BMNR': `${TV}/bitmine-immersion-technologies--big.svg`,
+      'AVGO': `${TV}/broadcom--big.svg`,
+      'NET': `${TV}/cloudflare--big.svg`,
+      'CRWD': `${TV}/crowdstrike--big.svg`,
     };
 
     // Normalize ticker
@@ -2294,7 +2336,9 @@
         'GOOG': 'GOOGL', 'BRK.B': 'BRK', 'BRK.A': 'BRK',
         'US500': 'SP500', 'USA500': 'SP500', 'SPX': 'SP500',
         'US100': 'NDX', 'USA100': 'NDX', 'NAS100': 'NDX', 'NASDAQ': 'NDX',
-        'US30': 'DJI', 'USA30': 'DJI', 'DOW30': 'DJI'
+        'USTECH': 'NDX',
+        'US30': 'DJI', 'USA30': 'DJI', 'DOW30': 'DJI',
+        'JPN225': 'JP225'
       };
       return normalizations[ticker] || ticker;
     }
@@ -2358,7 +2402,20 @@
       'PURR': 'Purr', 'PEPE': 'Pepe', 'BONK': 'Bonk', 'WIF': 'Dogwifhat',
       'SHIB': 'Shiba Inu', 'MOG': 'Mog Coin',
       'BNB': 'BNB', 'ENA': 'Ethena', 'BCH': 'Bitcoin Cash', 'ZEC': 'Zcash',
-      'LIT': 'Litentry', 'PUMP': 'PumpFun', 'FARTCOIN': 'Fartcoin', '1000PEPE': '1000x Pepe'
+      'LIT': 'Litentry', 'PUMP': 'PumpFun', 'FARTCOIN': 'Fartcoin', '1000PEPE': '1000x Pepe',
+      // Paragon (para)
+      'COHR': 'Coherent', 'GLW': 'Corning', 'CRDO': 'Credo Technology',
+      'LRCX': 'Lam Research', 'STX': 'Seagate', 'IREN': 'IREN',
+      'VST': 'Vistra', 'TER': 'Teradyne', 'AAOI': 'Applied Optoelectronics',
+      'CIEN': 'Ciena', 'NAVER': 'Naver', 'RDDT': 'Reddit',
+      'UNITREE': 'Unitree', 'CAMBRICON': 'Cambricon', 'MELI': 'MercadoLibre',
+      'TENCENT': 'Tencent', 'H100': 'H100 GPU Index',
+      'TOTAL2': 'Crypto Cap ex-BTC', 'OTHERS': 'Crypto Cap ex-Top 10',
+      'BTCD': 'Bitcoin Dominance', '10Y': 'US 10Y Yield',
+      // Markets by Kinetiq (mkts)
+      'XIAOMI': 'Xiaomi', 'BMNR': 'Bitmine Immersion', 'SEMI': 'Semiconductors',
+      'GLDMINE': 'Gold Miners', 'USENERGY': 'US Energy', 'USBOND': 'US Treasuries',
+      'SMALL2000': 'Russell 2000', 'JP225': 'Nikkei 225', 'KR200': 'KOSPI 200'
     };
 
     function getAssetName(ticker) {
@@ -2402,7 +2459,13 @@
         'XLF', 'XLE', 'XLK', 'XLV', 'ARM', 'SMCI', 'DELL', 'AVGO', 'MU', 'QCOM',
         'HOOD', 'SOFI', 'AFRM', 'UPST', 'DKNG', 'ABNB', 'RBLX', 'NET', 'CRWD', 'ZS',
         'BRK', 'US500', 'USA500', 'US100', 'USA100', 'US30', 'USA30', 'NDX', 'SPX', 'DJI',
-        'XYZ100'
+        'XYZ100',
+        // Paragon (para)
+        'COHR', 'GLW', 'CRDO', 'LRCX', 'STX', 'IREN', 'VST', 'TER', 'AAOI', 'CIEN',
+        'NAVER', 'RDDT', 'UNITREE', 'CAMBRICON', 'MELI', 'TENCENT', 'H100',
+        // Markets by Kinetiq (mkts)
+        'XIAOMI', 'BMNR', 'SEMI', 'GLDMINE', 'USENERGY', 'SMALL2000',
+        'USBOND', '10Y', 'JP225', 'KR200'
       ],
       commodities: [
         'GOLD', 'SILVER', 'OIL', 'BRENT', 'BRENTOIL', 'NATGAS', 'NG', 'CL', 'COPPER', 'HG',
@@ -2420,7 +2483,8 @@
         'UNI', 'ATOM', 'LTC', 'ETC', 'AAVE', 'MKR', 'SNX', 'CRV', 'APE', 'SHIB',
         'PEPE', 'BONK', 'WIF', 'ARB', 'OP', 'SUI', 'SEI', 'TIA', 'INJ', 'JUP',
         'HYPE', 'PURR', 'MOG', 'FARTCOIN', 'AI16Z', 'VIRTUAL', 'PENGU',
-        'LIT', 'PUMP', 'BNB', 'ENA', 'ZEC', 'BCH', '1000PEPE'
+        'LIT', 'PUMP', 'BNB', 'ENA', 'ZEC', 'BCH', '1000PEPE',
+        'TOTAL2', 'OTHERS', 'BTCD'
       ]
     };
 
@@ -2476,6 +2540,33 @@
       return Math.abs((totalCost / filledQty - bestPx) / bestPx) * 100;
     }
 
+    // Deployer logo, with a text fallback when the image file is missing
+    function deployerInitials(name) {
+      const clean = String(name || '').replace(/[^A-Za-z0-9]/g, '');
+      return (clean.slice(0, 2) || '?').toUpperCase();
+    }
+
+    function logoFallback(el, initials) {
+      const span = document.createElement('span');
+      span.className = el.className + ' deployer-logo-fallback';
+      span.setAttribute('style', el.getAttribute('style') || '');
+      span.title = el.getAttribute('title') || '';
+      span.textContent = initials;
+      el.replaceWith(span);
+    }
+
+    function deployerLogo(dep, cls, style, title) {
+      const name = dep?.name || '';
+      return `<img ${[
+        `src="${dep?.image || ''}"`,
+        `alt="${name}"`,
+        cls ? `class="${cls}"` : '',
+        style ? `style="${style}"` : '',
+        title ? `title="${title}"` : '',
+        `onerror="logoFallback(this, '${deployerInitials(name)}')"`
+      ].filter(Boolean).join(' ')}>`;
+    }
+
     // Load data
     async function loadData() {
       const keys = Object.keys(DEPLOYERS);
@@ -2521,6 +2612,9 @@
             baseAsset
           });
         }
+
+        // Inactive deployer — skip it so nothing downstream renders it.
+        if (HIDE_ZERO_VOLUME_DEPLOYERS && vol <= 0) continue;
 
         data.deployers[key] = {
           ...DEPLOYERS[key],
@@ -2753,8 +2847,8 @@
           </div>
           <div class="multi-deployer-deployers">
             ${item.entries.map(e => {
-              const dep = DEPLOYERS[e.deployerKey];
-              return `<img src="${dep?.image || ''}" alt="${dep?.name || e.deployerKey}" title="${dep?.name || e.deployerKey}: ${fmt(e.volume)}" onerror="this.style.display='none'">`;
+              const dep = DEPLOYERS[e.deployerKey] || { name: e.deployerKey };
+              return deployerLogo(dep, 'deployer-logo-mini', '', `${dep.name || e.deployerKey}: ${fmt(e.volume)}`);
             }).join('')}
           </div>
         </div>
@@ -2779,7 +2873,7 @@
         return `
           <div class="deployer-card glass" data-deployer="${d.key}">
             <div class="deployer-header">
-              <img src="${d.image || ''}" alt="${d.name}" class="deployer-logo" onerror="this.style.display='none'">
+              ${deployerLogo(d, 'deployer-logo')}
               <span class="deployer-name">${d.name}</span>
             </div>
             <div class="deployer-stats">
@@ -2994,7 +3088,7 @@
         .sort((a, b) => sortBy === 'volume' ? b.volume - a.volume : b.oi - a.oi);
 
       document.getElementById('modalTitle').innerHTML = `
-        <img src="${deployer.image || ''}" alt="${deployer.name}" class="modal-deployer-logo" style="width: 36px; height: 36px;" onerror="this.style.display='none'">
+        ${deployerLogo(deployer, 'modal-deployer-logo', 'width: 36px; height: 36px;')}
         ${deployer.name}
       `;
 
@@ -3126,7 +3220,7 @@
       document.getElementById('modalPairs').innerHTML = displayPairs.map((p, i) => `
         <div class="modal-table-row" style="grid-template-columns: 1fr 100px 110px 100px;">
           <div class="modal-deployer-info">
-            <img src="${p.deployerImage || ''}" alt="${p.deployerName}" class="modal-deployer-logo" onerror="this.style.display='none'">
+            ${deployerLogo({ name: p.deployerName, image: p.deployerImage }, 'modal-deployer-logo')}
             <span class="modal-deployer-name">${p.deployerName}</span>
           </div>
           <span class="value">${fmt(p.volume)}</span>
@@ -3390,7 +3484,7 @@
         <div class="compare-grid">
           <div class="compare-card">
             <div class="compare-card-header">
-              <img src="${dep1.image}" alt="${dep1.name}" style="width: 28px; height: 28px; border-radius: 8px; object-fit: cover;" onerror="this.style.display='none'">
+              ${deployerLogo(dep1, '', 'width: 28px; height: 28px; border-radius: 8px; object-fit: cover;')}
               <div>
                 <div class="compare-card-name">${dep1.name}</div>
                 <div class="compare-card-ticker">${(d1.markets || []).length} markets</div>
@@ -3413,7 +3507,7 @@
           </div>
           <div class="compare-card">
             <div class="compare-card-header">
-              <img src="${dep2.image}" alt="${dep2.name}" style="width: 28px; height: 28px; border-radius: 8px; object-fit: cover;" onerror="this.style.display='none'">
+              ${deployerLogo(dep2, '', 'width: 28px; height: 28px; border-radius: 8px; object-fit: cover;')}
               <div>
                 <div class="compare-card-name">${dep2.name}</div>
                 <div class="compare-card-ticker">${(d2.markets || []).length} markets</div>

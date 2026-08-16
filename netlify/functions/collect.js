@@ -5,7 +5,7 @@ const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 const COLLECT_SECRET = process.env.COLLECT_SECRET;
 
 const API_URL = 'https://api.hyperliquid.xyz/info';
-const DEPLOYERS = ['xyz', 'hyna', 'cash', 'km', 'flx', 'vntl'];
+const DEPLOYERS = ['xyz', 'hyna', 'cash', 'km', 'mkts', 'para', 'flx', 'vntl'];
 
 const COLLATERAL_TOKENS = {
   0: 'USDC',
